@@ -1,21 +1,24 @@
 import { HOST, PORT, V1 } from "../configs.js";
+import httpStautsCode from "../errors/httpStautsCode.js";
 
-const apiRes = (resource, kind) => {
+const apiRes = () => {
   return {
-    collection: (contents) => {
+    // format success response json 
+    success: (data, message = "Request successful", statusCode = httpStautsCode.success) => {
       return {
-        kind: "Collection",
-        self: `${HOST}:${PORT}/${V1}/${resource}`,
-        contents,
+        statusCode,
+        message,
+        data, 
       };
     },
-    one: (data) => {
+      // format error response json
+    error: (message = "Something went wrong", statusCode = HttpStatusCode.INTERNAL_SERVER_ERROR, errorDetails = null) => {
       return {
-        kind,
-        self: `${HOST}:${PORT}/${V1}/${resource}/${data.id}`,
-        ...data,
+        statusCode,
+        message,
+        error: errorDetails, 
       };
-    },
+    }
   };
 };
 
