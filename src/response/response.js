@@ -1,10 +1,10 @@
 import { HOST, PORT, V1 } from "../configs.js";
-import httpStautsCode from "../errors/httpStautsCode.js";
+import HttpStautsCode from "../errors/HttpStautsCode.js";
 
 const apiRes = () => {
   return {
     // format success response json 
-    success: (data, message = "Request successful", statusCode = httpStautsCode.success) => {
+    success: (data, message = "Request successful", statusCode = HttpStautsCode.success) => {
       return {
         statusCode,
         message,
@@ -12,7 +12,7 @@ const apiRes = () => {
       };
     },
       // format error response json
-    error: (message = "Something went wrong", statusCode = HttpStatusCode.INTERNAL_SERVER_ERROR, errorDetails = null) => {
+    error: (message = "Something went wrong", statusCode = HttpStautsCode.INTERNAL_SERVER_ERROR, errorDetails = null) => {
       return {
         statusCode,
         message,
