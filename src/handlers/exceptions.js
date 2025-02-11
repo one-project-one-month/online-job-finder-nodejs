@@ -1,4 +1,4 @@
-import { newError } from "../errors/httpStautsCode.js";
+import { newError } from "../errors/statusCode.js";
 
 export function exceptionHandler(handlerFn) {
   return async (...params) => {

@@ -13,7 +13,7 @@ export function connectDatabase() {
     });
 }
 
-export async function disconnectDabase() {
+export async function disconnectDatabase() {
   await prisma.$disconnect();
 }
 

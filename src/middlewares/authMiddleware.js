@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "../errors/httpStautsCode";
+import { HttpStatusCode } from "../errors/statusCode";
 
 const auth = (req, res, next) => {
   const { user } = req.session;
