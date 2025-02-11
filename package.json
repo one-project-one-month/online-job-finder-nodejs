@@ -1,0 +1,46 @@
+{
+  "name": "one-month-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src",
+    "postinstall": "prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "@sendgrid/mail": "^8.1.4",
+    "@tensorflow/tfjs": "^4.22.0",
+    "bcryptjs": "^2.4.3",
+    "bullmq": "^5.40.2",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "elasticlunr": "^0.9.5",
+    "elasticsearch": "^16.7.3",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "firebase": "^11.3.0",
+    "firebase-admin": "^13.1.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.10.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.13.1",
+    "prisma": "^6.3.1",
+    "pusher": "^5.2.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "type": "module"
+}

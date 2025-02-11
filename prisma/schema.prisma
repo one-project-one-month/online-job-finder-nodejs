@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  email      String   @unique
+  password   String
+  role       String
+  isComplete Boolean  @default(false)
+  version    Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  applicantProfile ApplicantProfile?
+  companyProfile   CompanyProfile?
+}
+
+model ApplicantProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  fullName    String
+  phone       String
+  location    String
+  description String
+  resume      String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user         User                  @relation(fields: [userId], references: [id])
+  industries   ApplicantIndustry[]
+  skills       ApplicantSkill[]
+  education    ApplicantEducation[]
+  experiences  ApplicantExperience[]
+  applications Application[]
+  attachments  ProfileAttachment[]
+  socialMedia  SocialMedia[]
+  SavedJob     SavedJob[]
+  Review       Review[]
+}
+
+model CompanyProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  companyName String
+  phone       String
+  website     String
+  location    String
+  description String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id])
+  jobs        Job[]
+  reviews     Review[]
+  socialMedia SocialMedia[]
+}
+
+model ProfileAttachment {
+  id        String   @id @default(uuid())
+  profileId String
+  filePath  String
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile ApplicantProfile @relation(fields: [profileId], references: [id])
+}
+
+model SocialMedia {
+  id          String   @id @default(uuid())
+  applicantId String?
+  companyId   String?
+  link        String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicant ApplicantProfile? @relation(fields: [applicantId], references: [id])
+  company   CompanyProfile?   @relation(fields: [companyId], references: [id])
+}
+
+model Industry {
+  id          String   @id @default(uuid())
+  industry    String
+  description String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicantIndustries ApplicantIndustry[]
+  jobs                Job[]
+}
+
+model ApplicantIndustry {
+  id          String   @id @default(uuid())
+  applicantId String
+  industryId  String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+  industry  Industry         @relation(fields: [industryId], references: [id])
+}
+
+model ApplicantSkill {
+  id          String   @id @default(uuid())
+  applicantId String
+  skill       String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+model ApplicantEducation {
+  id             String    @id @default(uuid())
+  applicantId    String
+  schoolName     String
+  degree         String
+  fieldOfStudy   String
+  description    String
+  startDate      DateTime
+  endDate        DateTime?
+  stillAttending Boolean   @default(false)
+  version        Int       @default(1)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+model ApplicantExperience {
+  id               String    @id @default(uuid())
+  applicantId      String
+  companyName      String
+  location         String
+  title            String
+  description      String
+  jobType          String
+  startDate        DateTime
+  endDate          DateTime?
+  currentlyWorking Boolean   @default(false)
+  version          Int       @default(1)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+model Job {
+  id           String    @id @default(uuid())
+  companyId    String
+  title        String
+  industryId   String
+  type         String
+  description  String
+  requirements String
+  salary       Float
+  startDate    DateTime
+  endDate      DateTime?
+  location     String
+  status       String
+  version      Int       @default(1)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  company      CompanyProfile  @relation(fields: [companyId], references: [id])
+  industry     Industry        @relation(fields: [industryId], references: [id])
+  applications Application[]
+  attachments  JobAttachment[]
+  questions    JobQuestion[]
+  savedJobs    SavedJob[]
+}
+
+model SavedJob {
+  id          String           @id @default(uuid())
+  job         Job              @relation(fields: [jobId], references: [id])
+  jobId       String
+  applicant   ApplicantProfile @relation(fields: [applicantId], references: [id])
+  applicantId String
+  version     Int
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model JobQuestion {
+  id        String   @id @default(uuid())
+  jobId     String
+  question  String
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  job Job @relation(fields: [jobId], references: [id])
+}
+
+model JobAttachment {
+  id        String   @id @default(uuid())
+  jobId     String
+  filePath  String
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  job Job @relation(fields: [jobId], references: [id])
+}
+
+model Application {
+  id          String   @id @default(uuid())
+  jobId       String
+  applicantId String
+  status      String
+  version     Int      @default(1)
+  appliedAt   DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  job       Job              @relation(fields: [jobId], references: [id])
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  companyId   String
+  applicantId String
+  rating      Int
+  comment     String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company   CompanyProfile   @relation(fields: [companyId], references: [id])
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
