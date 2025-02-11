@@ -1,25 +1,20 @@
 import { HOST, PORT, V1 } from "../configs.js";
-import HttpStautsCode from "../errors/HttpStautsCode.js";
+import StatusCode from "../errors/StatusCode.js";
 
-const apiRes = () => {
+const successResponse = (data, message = "Request successful", statusCode = StatusCode.SUCCESS) => {
   return {
-    // format success response json 
-    success: (data, message = "Request successful", statusCode = HttpStautsCode.success) => {
-      return {
-        statusCode,
-        message,
-        data, 
-      };
-    },
-      // format error response json
-    error: (message = "Something went wrong", statusCode = HttpStautsCode.INTERNAL_SERVER_ERROR, errorDetails = null) => {
-      return {
-        statusCode,
-        message,
-        error: errorDetails, 
-      };
-    }
+    statusCode,
+    message,
+    data,
   };
 };
 
-export { apiRes };
+const errorResponse = (errorDetails = null,message = "Something went wrong", statusCode = StatusCode.INTERNAL_SERVER_ERROR) => {
+  return {
+    statusCode,
+    message,
+    error: errorDetails,
+  };
+};
+
+export { successResponse, errorResponse };

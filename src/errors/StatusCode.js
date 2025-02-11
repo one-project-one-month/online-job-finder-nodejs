@@ -1,5 +1,5 @@
-export  default HttpStatusCode = {
-    OK: 200,
+export  default StatusCode = {
+    SUCCESS: 200,
     CREATED: 201,
 
     BAD_REQUEST: 400,
