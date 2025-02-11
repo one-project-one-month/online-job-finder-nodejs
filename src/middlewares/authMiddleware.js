@@ -1,11 +1,11 @@
-import { HttpStatusCode } from "../errors/statusCode";
+import { statusCode } from "../errors/statusCode";
 
 const auth = (req, res, next) => {
   const { user } = req.session;
 
   if (!user) {
     return res
-      .status(HttpStatusCode.UNAUTHORIZED)
+      .status(statusCode.UNAUTHORIZED)
       .json({ status: "fail", message: "unauthorized" });
   }
 
