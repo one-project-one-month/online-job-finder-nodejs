@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import { connectDatabase } from "./database/index.js";
 import { RedisStore } from "connect-redis";
+import { connectDatabase } from "./database/index.js";
 import redisClient from "./config/redis.js";
 import session from "express-session";
 

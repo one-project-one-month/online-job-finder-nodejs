@@ -6,7 +6,7 @@ export function connectDatabase() {
   prisma
     .$connect()
     .then(() => {
-      console.log("Connected to database");
+      console.log("✅ Connected to Postgresql successfully!");
     })
     .catch((err) => {
       console.error("Error connecting to database", err);

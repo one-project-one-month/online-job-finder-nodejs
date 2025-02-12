@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
 const PORT = process.env.PORT || 9000;
 const HOST = process.env.HOST || "localhost";
