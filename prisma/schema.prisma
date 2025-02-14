@@ -7,25 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-  RECRUITER
-}
-
 model User {
-  id         String   @id @default(uuid())
-  username   String   @unique
-  email      String   @unique
-  password   String
-  role       Role     @default(USER)
-  isComplete Boolean  @default(false)
-  version    Int      @default(1)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                     String   @id @default(uuid())
+  username               String
+  profilePhoto           String?
+  email                  String   @unique
+  password               String
+  roleId                 Int      @default(1)
+  isInformationCompleted Boolean  @default(false)
+  version                Int      @default(1)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
+  role             Role              @relation(fields: [roleId], references: [id])
   applicantProfile ApplicantProfile?
   companyProfile   CompanyProfile?
+  socialMedia      SocialMedia[]
+  resumes          Resume[]
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String
+  version   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+}
+
+model Location {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  version     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicantProfiles ApplicantProfile[]
+  companyProfiles   CompanyProfile[]
+  jobs              Job[]
 }
 
 model ApplicantProfile {
@@ -33,23 +54,32 @@ model ApplicantProfile {
   userId      String   @unique
   fullName    String
   phone       String
-  location    String
-  description String
-  resume      String
-  version     Int      @default(1)
+  address     String?
+  locationId  String?
+  description String?
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user         User                  @relation(fields: [userId], references: [id])
-  industries   ApplicantIndustry[]
-  skills       ApplicantSkill[]
-  education    ApplicantEducation[]
-  experiences  ApplicantExperience[]
-  applications Application[]
-  attachments  ProfileAttachment[]
-  socialMedia  SocialMedia[]
-  SavedJob     SavedJob[]
-  Review       Review[]
+  user                 User                   @relation(fields: [userId], references: [id])
+  location             Location?              @relation(fields: [locationId], references: [id])
+  educations           ApplicantEducation[]
+  experiences          ApplicantExperience[]
+  applications         Application[]
+  skills               ApplicantSkill[]
+  ApplicantJobCategory ApplicantJobCategory[]
+  Review               Review[]
+}
+
+model Resume {
+  id        String   @id @default(uuid())
+  userId    String
+  filePath  String
+  version   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model CompanyProfile {
@@ -57,76 +87,77 @@ model CompanyProfile {
   userId      String   @unique
   companyName String
   phone       String
-  website     String
-  location    String
-  description String
-  version     Int      @default(1)
+  website     String?
+  address     String?
+  locationId  String?
+  description String?
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user        User          @relation(fields: [userId], references: [id])
-  jobs        Job[]
-  reviews     Review[]
-  socialMedia SocialMedia[]
-}
-
-model ProfileAttachment {
-  id        String   @id @default(uuid())
-  profileId String
-  filePath  String
-  version   Int      @default(1)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  profile ApplicantProfile @relation(fields: [profileId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
+  location Location? @relation(fields: [locationId], references: [id])
+  jobs     Job[]
+  Review   Review[]
 }
 
 model SocialMedia {
-  id          String   @id @default(uuid())
-  applicantId String?
-  companyId   String?
-  link        String
-  version     Int      @default(1)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  userId    String
+  link      String
+  version   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  applicant ApplicantProfile? @relation(fields: [applicantId], references: [id])
-  company   CompanyProfile?   @relation(fields: [companyId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
-model Industry {
+model JobCategory {
   id          String   @id @default(uuid())
   industry    String
-  description String
-  version     Int      @default(1)
+  description String?
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  applicantIndustries ApplicantIndustry[]
-  jobs                Job[]
+  jobs                 Job[]
+  ApplicantJobCategory ApplicantJobCategory[]
 }
 
-model ApplicantIndustry {
+model ApplicantJobCategory {
   id          String   @id @default(uuid())
   applicantId String
   industryId  String
-  version     Int      @default(1)
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
-  industry  Industry         @relation(fields: [industryId], references: [id])
+  applicant   ApplicantProfile @relation(fields: [applicantId], references: [id])
+  jobCategory JobCategory      @relation(fields: [industryId], references: [id])
+}
+
+model Skill {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  version     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicantSkills ApplicantSkill[]
+  JobSkill        JobSkill[]
 }
 
 model ApplicantSkill {
   id          String   @id @default(uuid())
   applicantId String
-  skill       String
-  version     Int      @default(1)
+  skillId     String
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+  skill     Skill            @relation(fields: [skillId], references: [id])
 }
 
 model ApplicantEducation {
@@ -134,12 +165,12 @@ model ApplicantEducation {
   applicantId    String
   schoolName     String
   degree         String
-  fieldOfStudy   String
-  description    String
+  fieldOfStudy   String?
+  description    String?
   startDate      DateTime
   endDate        DateTime?
-  stillAttending Boolean   @default(false)
-  version        Int       @default(1)
+  stillAttending Boolean
+  version        Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -150,14 +181,14 @@ model ApplicantExperience {
   id               String    @id @default(uuid())
   applicantId      String
   companyName      String
-  location         String
+  location         String?
   title            String
-  description      String
+  description      String?
   jobType          String
   startDate        DateTime
   endDate          DateTime?
-  currentlyWorking Boolean   @default(false)
-  version          Int       @default(1)
+  currentlyWorking Boolean
+  version          Int
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
@@ -165,72 +196,51 @@ model ApplicantExperience {
 }
 
 model Job {
-  id           String    @id @default(uuid())
-  companyId    String
-  title        String
-  industryId   String
-  type         String
-  description  String
-  requirements String
-  salary       Float
-  startDate    DateTime
-  endDate      DateTime?
-  location     String
-  status       String
-  version      Int       @default(1)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  companyId     String
+  title         String
+  jobCategoryId String
+  locationId    String
+  type          JobType
+  description   String
+  requirements  String
+  numOfPosts    Int
+  salary        Float
+  address       String?
+  status        JobStatus
+  version       Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  company      CompanyProfile  @relation(fields: [companyId], references: [id])
-  industry     Industry        @relation(fields: [industryId], references: [id])
+  company      CompanyProfile @relation(fields: [companyId], references: [id])
+  category     JobCategory    @relation(fields: [jobCategoryId], references: [id])
+  location     Location       @relation(fields: [locationId], references: [id])
   applications Application[]
-  attachments  JobAttachment[]
-  questions    JobQuestion[]
-  savedJobs    SavedJob[]
+  skills       JobSkill[]
 }
 
-model SavedJob {
-  id          String           @id @default(uuid())
-  job         Job              @relation(fields: [jobId], references: [id])
-  jobId       String
-  applicant   ApplicantProfile @relation(fields: [applicantId], references: [id])
-  applicantId String
-  version     Int
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-}
-
-model JobQuestion {
+model JobSkill {
   id        String   @id @default(uuid())
   jobId     String
-  question  String
-  version   Int      @default(1)
+  skillId   String
+  version   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  job Job @relation(fields: [jobId], references: [id])
-}
-
-model JobAttachment {
-  id        String   @id @default(uuid())
-  jobId     String
-  filePath  String
-  version   Int      @default(1)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  job Job @relation(fields: [jobId], references: [id])
+  job   Job   @relation(fields: [jobId], references: [id])
+  skill Skill @relation(fields: [skillId], references: [id])
 }
 
 model Application {
-  id          String   @id @default(uuid())
+  id          String            @id @default(uuid())
   jobId       String
   applicantId String
-  status      String
-  version     Int      @default(1)
-  appliedAt   DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      ApplicationStatus
+  resumeId    String
+  version     Int
+  appliedAt   DateTime          @default(now())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   job       Job              @relation(fields: [jobId], references: [id])
   applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
@@ -240,12 +250,30 @@ model Review {
   id          String   @id @default(uuid())
   companyId   String
   applicantId String
-  rating      Int
+  rating      Float
   comment     String
-  version     Int      @default(1)
+  version     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   company   CompanyProfile   @relation(fields: [companyId], references: [id])
   applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+enum JobType {
+  Remote
+  OnSite
+  Hybrid
+}
+
+enum JobStatus {
+  Open
+  Close
+}
+
+enum ApplicationStatus {
+  Pending
+  Seen
+  Accepted
+  Rejected
 }

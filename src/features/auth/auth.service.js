@@ -39,7 +39,7 @@ export const loginUser = async (email, password) => {
 
   return {
     token,
-    name: user.name,
+    username: user.username,
     email: user.email,
   };
 };
@@ -83,6 +83,22 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
 };
 
 export const authUser = async (userId) => {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      username: true,
+      profilePhoto: true,
+      email: true,
+      roleId: true,
+      isInformationCompleted: true,
+      version: true,
+      createdAt: true,
+      updatedAt: true,
+      role: {
+        select: { name: true },
+      },
+    },
+  });
   return user;
 };
