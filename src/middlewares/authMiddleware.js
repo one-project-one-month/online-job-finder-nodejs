@@ -1,16 +1,16 @@
-import { HttpStatusCode } from "../errors/statusCode";
+import jwt from "jsonwebtoken";
 
-const auth = (req, res, next) => {
-  const { user } = req.session;
+const authenticateToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
 
-  if (!user) {
-    return res
-      .status(HttpStatusCode.UNAUTHORIZED)
-      .json({ status: "fail", message: "unauthorized" });
-  }
+  if (!token) return res.status(403).json({ error: "Unauthorized" });
 
-  req.user = user;
-  next();
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+
+    req.user = user;
+    next();
+  });
 };
 
-export default auth;
+export default authenticateToken;
