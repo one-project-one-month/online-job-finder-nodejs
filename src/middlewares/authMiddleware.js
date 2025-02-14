@@ -1,6 +1,5 @@
-
 import jwt from "jsonwebtoken";
-import { StatusCode } from "../errors/statusCode";
+import { StatusCode } from "../errors/StatusCode.js";
 
 const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];

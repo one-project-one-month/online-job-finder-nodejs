@@ -1,4 +1,4 @@
-import { statusCode } from "../../errors/statusCode.js";
+import { StatusCode } from "../../errors/StatusCode.js";
 import {
   authUser,
   changePassword,
@@ -9,9 +9,9 @@ import {
 export const registerController = async (req, res) => {
   try {
     const user = await registerUser(req.body);
-    res.status(statusCode.OK).json(user);
+    res.status(StatusCode.OK).json(user);
   } catch (error) {
-    res.status(statusCode.BAD_REQUEST).json({ error: error.message });
+    res.status(StatusCode.BAD_REQUEST).json({ error: error.message });
   }
 };
 
