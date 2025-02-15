@@ -83,3 +83,15 @@ export const updateLocation = async (locationId, data) => {
     throw new Error("Failed to update location.", error.message);
   }
 };
+
+export const destoryLocation = async (locationId) => {
+  try {
+    const location = await prisma.location.delete({
+      where: { id: locationId },
+    });
+    return location;
+  } catch (error) {
+    console.error("Error deleting location:", error);
+    throw new Error("Failed to delete location.");
+  }
+};

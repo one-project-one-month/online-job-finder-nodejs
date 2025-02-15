@@ -1,6 +1,7 @@
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
   createLocation,
+  destoryLocation,
   getLocationById,
   getLocations,
   updateLocation,
@@ -43,6 +44,17 @@ export const updateLocationController = async (req, res) => {
   try {
     const location = await updateLocation(req.params.id, req.body);
     res.status(StatusCode.SUCCESS).json({ status: "success", data: location });
+  } catch (error) {
+    res
+      .status(StatusCode.BAD_REQUEST)
+      .json({ status: "error", message: error.message });
+  }
+};
+
+export const destoryLocationController = async (req, res) => {
+  try {
+    await destoryLocation(req.params.id);
+    res.status(StatusCode.SUCCESS).json({ status: "success" });
   } catch (error) {
     res
       .status(StatusCode.BAD_REQUEST)

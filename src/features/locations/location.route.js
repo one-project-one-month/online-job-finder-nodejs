@@ -1,6 +1,7 @@
 import express from "express";
 import {
   craeteLoactionController,
+  destoryLocationController,
   getLocationByIdController,
   getLocationsController,
   updateLocationController,
@@ -27,6 +28,12 @@ locationRouter.put(
   authenticateToken,
   adminMiddleware,
   updateLocationController
+);
+locationRouter.delete(
+  "/:id",
+  authenticateToken,
+  adminMiddleware,
+  destoryLocationController
 );
 
 export default locationRouter;
