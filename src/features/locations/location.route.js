@@ -19,8 +19,14 @@ locationRouter.post(
   adminMiddleware,
   craeteLoactionController
 );
-locationRouter.get("/", getLocationsController);
-locationRouter.get("/:id", getLocationByIdController);
-locationRouter.put("/:id", updateLocationController);
+locationRouter.get("/", authenticateToken, getLocationsController);
+locationRouter.get("/:id", authenticateToken, getLocationByIdController);
+locationRouter.put(
+  "/:id",
+  validate(locationSchema),
+  authenticateToken,
+  adminMiddleware,
+  updateLocationController
+);
 
 export default locationRouter;
