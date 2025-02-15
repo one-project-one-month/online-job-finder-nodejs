@@ -4,6 +4,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import { connectDatabase } from "./database/index.js";
 import authRouter from "./features/auth/auth.router.js";
+import locationRouter from "./features/locations/location.route.js";
 
 //db connection
 connectDatabase();
@@ -16,5 +17,6 @@ app.use(express.json());
 
 //routes
 app.use("/api/auth", authRouter);
+app.use("/api/location", locationRouter);
 
 export default app;

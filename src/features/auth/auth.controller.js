@@ -9,7 +9,7 @@ import {
 export const registerController = async (req, res) => {
   try {
     const user = await registerUser(req.body);
-    res.status(StatusCode.OK).json(user);
+    res.status(StatusCode.SUCCESS).json(user);
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ error: error.message });
   }
@@ -24,11 +24,11 @@ export const loginController = async (req, res) => {
       res.json(result);
     } else {
       res
-        .status(statusCode.UNAUTHORIZED)
+        .status(StatusCode.UNAUTHORIZED)
         .json({ message: "Invalid credentials" });
     }
   } catch (error) {
-    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
 
@@ -47,7 +47,7 @@ export const changePasswordController = async (req, res) => {
       data: response,
     });
   } catch (error) {
-    res.status(statusCode.BAD_REQUEST).json({ message: error.message });
+    res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -61,7 +61,7 @@ export const authUserController = async (req, res) => {
 
     if (!user) {
       return res
-        .status(statusCode.NOT_FOUND)
+        .status(StatusCode.NOT_FOUND)
         .json({ message: "User not found" });
     }
 
@@ -69,7 +69,7 @@ export const authUserController = async (req, res) => {
   } catch (error) {
     console.error("Error fetching user: ", error);
     res
-      .status(statusCode.INTERNAL_SERVER_ERROR)
+      .status(StatusCode.INTERNAL_SERVER_ERROR)
       .json({ error: "Failed to fetch user" });
   }
 };
