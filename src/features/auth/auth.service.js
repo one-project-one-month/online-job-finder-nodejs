@@ -86,9 +86,15 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
 };
 
 export const authUser = async (userId) => {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  return {
-    username: user.username,
-    email: user.email,
-  };
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      role: true,
+    },
+  });
+  //return {
+  //  username: user.username,
+  //  email: user.email,
+  //};
+  return user;
 };
