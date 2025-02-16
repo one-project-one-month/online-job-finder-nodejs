@@ -1,0 +1,47 @@
+export const jobs = [
+  {
+    companyId: "c1234567-89ab-cdef-0123-456789abcdef",
+    title: "Software Engineer",
+    jobCategoryId: "jc001",
+    locationId: 2,
+    type: "FULL_TIME",
+    description:
+      "Develop and maintain web applications using modern frameworks.",
+    requirements: "Experience with JavaScript, React, and Node.js.",
+    numOfPosts: 3,
+    salary: 75000.0,
+    address: "123 Tech Street, San Francisco, CA",
+    status: "OPEN",
+    version: 1,
+  },
+  {
+    companyId: "c2345678-90ab-cdef-1234-56789abcdef0",
+    title: "Data Scientist",
+    jobCategoryId: "jc002",
+    locationId: 1,
+    type: "PART_TIME",
+    description:
+      "Analyze large datasets to extract insights and build ML models.",
+    requirements: "Python, Machine Learning, SQL, and data visualization.",
+    numOfPosts: 2,
+    salary: 90000.0,
+    address: "456 Data Drive, New York, NY",
+    status: "OPEN",
+    version: 1,
+  },
+  {
+    companyId: "c3456789-01ab-cdef-2345-6789abcdef01",
+    title: "UX Designer",
+    jobCategoryId: "jc003",
+    locationId: 3,
+    type: "CONTRACT",
+    description:
+      "Design user-friendly interfaces for web and mobile applications.",
+    requirements: "Adobe XD, Figma, and UX research experience.",
+    numOfPosts: 1,
+    salary: 65000.0,
+    address: "789 Design Lane, Los Angeles, CA",
+    status: "CLOSED",
+    version: 1,
+  },
+];
