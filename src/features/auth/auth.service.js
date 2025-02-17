@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import prisma from "../../database/index.js";
 import jwt from "jsonwebtoken";
+import { json } from "express";
 
 export const registerUser = async (userData) => {
   const { username, email, password } = userData;
@@ -23,7 +24,9 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async (email, password) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
   if (!user) {
     throw new Error("Invalid credentials");
   }
@@ -79,7 +82,7 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
     data: { password: hashedPassword },
   });
 
-  return updatedUser;
+  return json("Password changed successfully");
 };
 
 export const authUser = async (userId) => {
@@ -100,5 +103,8 @@ export const authUser = async (userId) => {
       },
     },
   });
-  return user;
+  return {
+    username: user.username,
+    email: user.email,
+  };
 };

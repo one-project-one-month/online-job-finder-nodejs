@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { connectDatabase } from "./database/index.js";
 import authRouter from "./features/auth/auth.router.js";
 import locationRouter from "./features/locations/location.route.js";
+import skillRouter from "./features/skills/skill.route.js";
 
 //db connection
 connectDatabase();
@@ -18,5 +19,6 @@ app.use(express.json());
 //routes
 app.use("/api/auth", authRouter);
 app.use("/api/location", locationRouter);
+app.use("/api/skill", skillRouter);
 
 export default app;
