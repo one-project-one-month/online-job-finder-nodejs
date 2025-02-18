@@ -11,6 +11,7 @@ async function main() {
   await locationSeeder();
   await skillSeeder();
   await jobCategoriesSeeder();
+  //await companyProfileSeeder();
 }
 
 main()
