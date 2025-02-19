@@ -22,7 +22,6 @@ export const createLocation = async (data) => {
     });
     return location;
   } catch (error) {
-    console.error("Error creating location:", error);
     throw new Error("Failed to create location.");
   }
 };
@@ -37,7 +36,6 @@ export const getLocations = async () => {
     });
     return locations;
   } catch (error) {
-    console.error("Error fetching locations:", error);
     throw new Error("Failed to fetch locations.");
   }
 };
@@ -53,7 +51,6 @@ export const getLocationById = async (locationId) => {
     });
     return location;
   } catch (error) {
-    console.error("Error fetching location:", error);
     throw new Error("Failed to fetch location.");
   }
 };
@@ -91,7 +88,6 @@ export const destoryLocation = async (locationId) => {
     });
     return location;
   } catch (error) {
-    console.error("Error deleting location:", error);
     throw new Error("Failed to delete location.");
   }
 };
