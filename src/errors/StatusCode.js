@@ -1,5 +1,5 @@
-export const statusCode = {
-  OK: 200,
+export const StatusCode = {
+  SUCCESS: 200,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
