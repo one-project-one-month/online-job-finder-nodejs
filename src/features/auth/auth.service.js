@@ -104,5 +104,8 @@ export const authUser = async (userId) => {
       },
     },
   });
-  return user;
+  return {
+    username: user.username,
+    email: user.email,
+  };
 };

@@ -1,6 +1,5 @@
 import prisma from "../src/database/index.js";
 import authSeeder from "./seeder/authSeeder.js";
-import companyProfileSeeder from "./seeder/companyProfileSeeder.js";
 import jobCategoriesSeeder from "./seeder/jobCategorySeeder.js";
 import locationSeeder from "./seeder/location.js";
 import roleSeeder from "./seeder/roleSeeder.js";
@@ -12,7 +11,6 @@ async function main() {
   await locationSeeder();
   await skillSeeder();
   await jobCategoriesSeeder();
-  //await companyProfileSeeder();
 }
 
 main()
