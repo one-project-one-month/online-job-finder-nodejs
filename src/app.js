@@ -3,7 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import { connectDatabase } from "./database/index.js";
-import authRouter from "./features/auth/auth.router.js";
+import route from "./router/default.js";
 
 //db connection
 connectDatabase();
@@ -15,6 +15,5 @@ app.use(helmet());
 app.use(express.json());
 
 //routes
-app.use("/api/auth", authRouter);
-
+app.use("/api", route);
 export default app;
