@@ -104,12 +104,8 @@ export const authUser = async (userId) => {
       },
     },
   });
-<<<<<<< HEAD
-  return user;
-=======
   return {
     username: user.username,
     email: user.email,
   };
->>>>>>> e8374fe2ba5ec251a90517f0786685cf748fa744
 };
