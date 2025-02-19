@@ -32,7 +32,9 @@ export const getLocationsController = async (req, res) => {
 export const getLocationByIdController = async (req, res) => {
   try {
     const location = await getLocationById(req.params.id);
-    res.status(StatusCode.SUCCESS).json({ status: "success", data: location });
+    res
+      .status(StatusCode.SUCCESS)
+      .json({ status: "success", data: location, user: userId });
   } catch (error) {
     res
       .status(StatusCode.BAD_REQUEST)
