@@ -1,11 +1,21 @@
+-- CreateEnum
+CREATE TYPE "JobType" AS ENUM ('Remote', 'OnSite', 'Hybrid');
+
+-- CreateEnum
+CREATE TYPE "JobStatus" AS ENUM ('Open', 'Close');
+
+-- CreateEnum
+CREATE TYPE "ApplicationStatus" AS ENUM ('Pending', 'Seen', 'Accepted', 'Rejected');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
+    "profilePhoto" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
-    "isComplete" BOOLEAN NOT NULL DEFAULT false,
+    "roleId" INTEGER NOT NULL DEFAULT 1,
+    "isInformationCompleted" BOOLEAN NOT NULL DEFAULT false,
     "version" INTEGER NOT NULL DEFAULT 1,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -14,19 +24,54 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Role" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "version" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Location" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "version" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ApplicantProfile" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "resume" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "address" TEXT,
+    "locationId" TEXT,
+    "description" TEXT,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ApplicantProfile_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Resume" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "filePath" TEXT NOT NULL,
+    "version" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Resume_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -35,10 +80,11 @@ CREATE TABLE "CompanyProfile" (
     "userId" TEXT NOT NULL,
     "companyName" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
-    "website" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "website" TEXT,
+    "address" TEXT,
+    "locationId" TEXT,
+    "description" TEXT,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -46,24 +92,11 @@ CREATE TABLE "CompanyProfile" (
 );
 
 -- CreateTable
-CREATE TABLE "ProfileAttachment" (
-    "id" TEXT NOT NULL,
-    "profileId" TEXT NOT NULL,
-    "filePath" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "ProfileAttachment_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "SocialMedia" (
     "id" TEXT NOT NULL,
-    "applicantId" TEXT,
-    "companyId" TEXT,
+    "userId" TEXT NOT NULL,
     "link" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -71,35 +104,47 @@ CREATE TABLE "SocialMedia" (
 );
 
 -- CreateTable
-CREATE TABLE "Industry" (
+CREATE TABLE "JobCategory" (
     "id" TEXT NOT NULL,
     "industry" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "description" TEXT,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Industry_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "JobCategory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ApplicantIndustry" (
+CREATE TABLE "ApplicantJobCategory" (
     "id" TEXT NOT NULL,
     "applicantId" TEXT NOT NULL,
     "industryId" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "ApplicantIndustry_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ApplicantJobCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Skill" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "version" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Skill_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ApplicantSkill" (
     "id" TEXT NOT NULL,
     "applicantId" TEXT NOT NULL,
-    "skill" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "skillId" TEXT NOT NULL,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -112,12 +157,12 @@ CREATE TABLE "ApplicantEducation" (
     "applicantId" TEXT NOT NULL,
     "schoolName" TEXT NOT NULL,
     "degree" TEXT NOT NULL,
-    "fieldOfStudy" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "fieldOfStudy" TEXT,
+    "description" TEXT,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3),
-    "stillAttending" BOOLEAN NOT NULL DEFAULT false,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "stillAttending" BOOLEAN NOT NULL,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -129,14 +174,14 @@ CREATE TABLE "ApplicantExperience" (
     "id" TEXT NOT NULL,
     "applicantId" TEXT NOT NULL,
     "companyName" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
+    "location" TEXT,
     "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "jobType" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3),
-    "currentlyWorking" BOOLEAN NOT NULL DEFAULT false,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "currentlyWorking" BOOLEAN NOT NULL,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -148,16 +193,16 @@ CREATE TABLE "Job" (
     "id" TEXT NOT NULL,
     "companyId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "industryId" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "jobCategoryId" TEXT NOT NULL,
+    "locationId" TEXT NOT NULL,
+    "type" "JobType" NOT NULL,
     "description" TEXT NOT NULL,
     "requirements" TEXT NOT NULL,
+    "numOfPosts" INTEGER NOT NULL,
     "salary" DOUBLE PRECISION NOT NULL,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3),
-    "location" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "address" TEXT,
+    "status" "JobStatus" NOT NULL,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -165,39 +210,15 @@ CREATE TABLE "Job" (
 );
 
 -- CreateTable
-CREATE TABLE "SavedJob" (
+CREATE TABLE "JobSkill" (
     "id" TEXT NOT NULL,
     "jobId" TEXT NOT NULL,
-    "applicantId" TEXT NOT NULL,
+    "skillId" TEXT NOT NULL,
     "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "SavedJob_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "JobQuestion" (
-    "id" TEXT NOT NULL,
-    "jobId" TEXT NOT NULL,
-    "question" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "JobQuestion_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "JobAttachment" (
-    "id" TEXT NOT NULL,
-    "jobId" TEXT NOT NULL,
-    "filePath" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "JobAttachment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "JobSkill_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -205,8 +226,9 @@ CREATE TABLE "Application" (
     "id" TEXT NOT NULL,
     "jobId" TEXT NOT NULL,
     "applicantId" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "status" "ApplicationStatus" NOT NULL,
+    "resumeId" TEXT NOT NULL,
+    "version" INTEGER NOT NULL,
     "appliedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -219,9 +241,9 @@ CREATE TABLE "Review" (
     "id" TEXT NOT NULL,
     "companyId" TEXT NOT NULL,
     "applicantId" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
+    "rating" DOUBLE PRECISION NOT NULL,
     "comment" TEXT NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -229,10 +251,10 @@ CREATE TABLE "Review" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "Location_name_key" ON "Location"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ApplicantProfile_userId_key" ON "ApplicantProfile"("userId");
@@ -241,28 +263,37 @@ CREATE UNIQUE INDEX "ApplicantProfile_userId_key" ON "ApplicantProfile"("userId"
 CREATE UNIQUE INDEX "CompanyProfile_userId_key" ON "CompanyProfile"("userId");
 
 -- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ApplicantProfile" ADD CONSTRAINT "ApplicantProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ApplicantProfile" ADD CONSTRAINT "ApplicantProfile_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Resume" ADD CONSTRAINT "Resume_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CompanyProfile" ADD CONSTRAINT "CompanyProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProfileAttachment" ADD CONSTRAINT "ProfileAttachment_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CompanyProfile" ADD CONSTRAINT "CompanyProfile_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SocialMedia" ADD CONSTRAINT "SocialMedia_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "SocialMedia" ADD CONSTRAINT "SocialMedia_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SocialMedia" ADD CONSTRAINT "SocialMedia_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "CompanyProfile"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ApplicantJobCategory" ADD CONSTRAINT "ApplicantJobCategory_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ApplicantIndustry" ADD CONSTRAINT "ApplicantIndustry_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ApplicantIndustry" ADD CONSTRAINT "ApplicantIndustry_industryId_fkey" FOREIGN KEY ("industryId") REFERENCES "Industry"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ApplicantJobCategory" ADD CONSTRAINT "ApplicantJobCategory_industryId_fkey" FOREIGN KEY ("industryId") REFERENCES "JobCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ApplicantSkill" ADD CONSTRAINT "ApplicantSkill_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ApplicantSkill" ADD CONSTRAINT "ApplicantSkill_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ApplicantEducation" ADD CONSTRAINT "ApplicantEducation_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -274,19 +305,16 @@ ALTER TABLE "ApplicantExperience" ADD CONSTRAINT "ApplicantExperience_applicantI
 ALTER TABLE "Job" ADD CONSTRAINT "Job_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "CompanyProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Job" ADD CONSTRAINT "Job_industryId_fkey" FOREIGN KEY ("industryId") REFERENCES "Industry"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Job" ADD CONSTRAINT "Job_jobCategoryId_fkey" FOREIGN KEY ("jobCategoryId") REFERENCES "JobCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SavedJob" ADD CONSTRAINT "SavedJob_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Job" ADD CONSTRAINT "Job_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SavedJob" ADD CONSTRAINT "SavedJob_applicantId_fkey" FOREIGN KEY ("applicantId") REFERENCES "ApplicantProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JobSkill" ADD CONSTRAINT "JobSkill_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "JobQuestion" ADD CONSTRAINT "JobQuestion_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "JobAttachment" ADD CONSTRAINT "JobAttachment_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JobSkill" ADD CONSTRAINT "JobSkill_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Application" ADD CONSTRAINT "Application_jobId_fkey" FOREIGN KEY ("jobId") REFERENCES "Job"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

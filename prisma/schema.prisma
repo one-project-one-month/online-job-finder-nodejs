@@ -138,7 +138,7 @@ model ApplicantJobCategory {
 
 model Skill {
   id          String   @id @default(uuid())
-  name        String
+  name        String   @unique
   description String?
   version     Int
   createdAt   DateTime @default(now())

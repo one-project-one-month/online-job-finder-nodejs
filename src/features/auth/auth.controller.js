@@ -9,7 +9,7 @@ import {
 export const registerController = async (req, res) => {
   try {
     const user = await registerUser(req.body);
-    res.status(StatusCode.OK).json(user);
+    res.status(StatusCode.SUCCESS).json(user);
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ error: error.message });
   }

@@ -19,7 +19,7 @@ authRouter.post("/signup", validate(registerSchema), registerController);
 authRouter.post("/signin", validate(loginSchema), loginController);
 authRouter.get("/me", authenticateToken, authUserController);
 authRouter.post(
-  "/change-password",
+  "/change/password",
   validate(changePasswordSchema),
   authenticateToken,
   changePasswordController
