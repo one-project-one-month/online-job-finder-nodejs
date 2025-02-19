@@ -17,7 +17,7 @@ export const createLocation = async (data) => {
       data: {
         name,
         version: version || 1,
-        description: description || "",
+        description: description || null,
       },
     });
     return location;
