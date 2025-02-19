@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { StatusCode } from "../errors/StatusCode.js";
 
 const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];
@@ -7,7 +8,11 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
-
+    if (!user) {
+      return res
+        .status(StatusCode.UNAUTHORIZED)
+        .json({ status: "fail", message: "unauthorized" });
+    }
     req.user = user;
     next();
   });

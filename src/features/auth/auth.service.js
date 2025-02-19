@@ -91,10 +91,20 @@ export const authUser = async (userId) => {
     include: {
       role: true,
     },
+    select: {
+      id: true,
+      username: true,
+      profilePhoto: true,
+      email: true,
+      roleId: true,
+      isInformationCompleted: true,
+      version: true,
+      createdAt: true,
+      updatedAt: true,
+      role: {
+        select: { name: true },
+      },
+    },
   });
-  //return {
-  //  username: user.username,
-  //  email: user.email,
-  //};
   return user;
 };
