@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import prisma from "../../database/index.js";
 import jwt from "jsonwebtoken";
+import { json } from "express";
 
 export const registerUser = async (userData) => {
   const { username, email, password } = userData;
@@ -23,7 +24,9 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async (email, password) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
   if (!user) {
     throw new Error("Invalid credentials");
   }
@@ -45,20 +48,18 @@ export const loginUser = async (email, password) => {
 };
 
 export const changePassword = async (userId, currentPassword, newPassword) => {
-  // Ensure userId is passed correctly
   if (!userId) {
     throw new Error("User ID is required");
   }
 
-  // Find user by ID
   const user = await prisma.user.findUnique({
     where: {
-      id: userId, // Ensure userId is passed here, which is typically from the JWT or session
+      id: userId,
     },
     select: {
       id: true,
       email: true,
-      password: true, // Don't select password unless you need to verify the old one
+      password: true,
     },
   });
 
@@ -79,12 +80,15 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
     data: { password: hashedPassword },
   });
 
-  return updatedUser;
+  return json("Password changed successfully");
 };
 
 export const authUser = async (userId) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
+    include: {
+      role: true,
+    },
     select: {
       id: true,
       username: true,
