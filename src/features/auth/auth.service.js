@@ -100,12 +100,13 @@ export const authUser = async (userId) => {
       createdAt: true,
       updatedAt: true,
       role: {
-        select: { name: true },
+        select: { id: true, name: true },
       },
     },
   });
-  return {
-    username: user.username,
-    email: user.email,
-  };
+  //return {
+  //  username: user.username,
+  //  email: user.email,
+  //};
+  return user;
 };
