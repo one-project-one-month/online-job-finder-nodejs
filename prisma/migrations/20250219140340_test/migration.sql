@@ -262,6 +262,9 @@ CREATE UNIQUE INDEX "ApplicantProfile_userId_key" ON "ApplicantProfile"("userId"
 -- CreateIndex
 CREATE UNIQUE INDEX "CompanyProfile_userId_key" ON "CompanyProfile"("userId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Skill_name_key" ON "Skill"("name");
+
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
