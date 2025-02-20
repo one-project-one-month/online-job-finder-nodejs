@@ -9,7 +9,7 @@ import {
 
 export const createApplicantController = async (req, res) => {
   try {
-    const applicant = await createApplicant(req.body);
+    const applicant = await createApplicant(req.body, req);
     res.status(StatusCode.SUCCESS).json({ data: applicant });
   } catch (error) {
     res
@@ -42,7 +42,7 @@ export const getApplicantByIdController = async (req, res) => {
 
 export const updateApplicantController = async (req, res) => {
   try {
-    const applicant = await updateApplicant(req, params.id, req.body);
+    const applicant = await updateApplicant(req.params.id, req.body);
     res.status(StatusCode.SUCCESS).json({ data: applicant });
   } catch (error) {
     res

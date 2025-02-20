@@ -1,6 +1,6 @@
-const applicantProfiles = [
+export const applicants = [
   {
-    userId: "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    userId: "5f34fb5f-ac56-44a5-9422-62df57180fb9",
     fullName: "Alice Johnson",
     phone: "+1-555-987-6543",
     address: "5678 Tech Park, NY, USA",
@@ -9,7 +9,7 @@ const applicantProfiles = [
     version: 1,
   },
   {
-    userId: "b2c3d4e5-6789-01ab-cdef-234567890abc",
+    userId: "5f34fb5f-ac56-44a5-9422-62df57180fb9",
     fullName: "Michael Smith",
     phone: "+1-444-123-7890",
     address: "9012 Startup Valley, CA, USA",
@@ -18,7 +18,7 @@ const applicantProfiles = [
     version: 1,
   },
   {
-    userId: "c3d4e5f6-7890-12ab-cdef-34567890abcd",
+    userId: "5f34fb5f-ac56-44a5-9422-62df57180fb9",
     fullName: "Emma Davis",
     phone: "+1-333-456-3210",
     address: "3456 AI Street, TX, USA",
@@ -27,5 +27,3 @@ const applicantProfiles = [
     version: 1,
   },
 ];
-
-export default applicantProfiles;

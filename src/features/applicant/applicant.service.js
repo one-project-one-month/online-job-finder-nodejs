@@ -1,13 +1,14 @@
 import prisma from "../../database/index.js";
 
-export const createApplicant = async (data) => {
-  const { userId, fullName, phone, address, locationId, description, version } =
-    data;
+export const createApplicant = async (data, req) => {
+  const userId = req.user.id;
+  console.log(userId);
+  const { fullName, phone, address, locationId, description, version } = data;
 
   try {
     // Check if applicant already exists
     const existingApplicant = await prisma.applicantProfile.findUnique({
-      where: { userId },
+      where: { id: userId },
     });
 
     if (existingApplicant) {
@@ -16,6 +17,7 @@ export const createApplicant = async (data) => {
 
     const applicant = await prisma.applicantProfile.create({
       data: {
+        userId,
         fullName,
         phone,
         address: address || "",
@@ -40,6 +42,12 @@ export const getApplicants = async () => {
         userId: true,
         fullName: true,
         phone: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     });
 
@@ -59,6 +67,12 @@ export const getApplicantById = async (applicantId) => {
         userId: true,
         fullName: true,
         phone: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     });
     return applicant;
@@ -70,14 +84,6 @@ export const getApplicantById = async (applicantId) => {
 
 export const updateApplicant = async (applicantId, data) => {
   try {
-    // const existingApplicant = await prisma.applicantProfile.findUnique({
-    //   where: { id: data.username},
-    // });
-
-    // if (existingApplicant) {
-    //   throw new Error("applicant with this name already exist");
-    // }
-
     const updatedApplicant = await prisma.applicantProfile.update({
       where: { id: applicantId },
       data: {
@@ -85,7 +91,15 @@ export const updateApplicant = async (applicantId, data) => {
       },
       select: {
         id: true,
-        name: true,
+        userId: true,
+        fullName: true,
+        phone: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     });
     return updatedApplicant;

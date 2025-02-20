@@ -3,7 +3,7 @@ import { applicants } from "../dummy/applicantProfile.js";
 
 async function applicantProfileSeeder() {
   for (let applicant of applicants) {
-    await prisma.companyProfile.create({
+    await prisma.applicantProfile.create({
       data: applicant,
     });
   }
