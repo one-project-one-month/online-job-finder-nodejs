@@ -69,6 +69,8 @@ model ApplicantProfile {
   skills               ApplicantSkill[]
   ApplicantJobCategory ApplicantJobCategory[]
   Review               Review[]
+
+  SavedJob SavedJob[]
 }
 
 model Resume {
@@ -217,6 +219,8 @@ model Job {
   location     Location       @relation(fields: [locationId], references: [id])
   applications Application[]
   skills       JobSkill[]
+
+  SavedJob SavedJob[]
 }
 
 model JobSkill {
@@ -236,11 +240,23 @@ model Application {
   jobId       String
   applicantId String
   status      ApplicationStatus
-  resumeId    String
+  resumeId    String?
   version     Int
   appliedAt   DateTime          @default(now())
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
+
+  job       Job              @relation(fields: [jobId], references: [id])
+  applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
+}
+
+model SavedJob {
+  id          String   @id @default(uuid())
+  jobId       String
+  applicantId String
+  version     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   job       Job              @relation(fields: [jobId], references: [id])
   applicant ApplicantProfile @relation(fields: [applicantId], references: [id])
