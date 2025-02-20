@@ -2,7 +2,6 @@ import prisma from "../../database/index.js";
 
 export const createApplicant = async (data, req) => {
   const userId = req.user.id;
-  console.log(userId);
   const { fullName, phone, address, locationId, description, version } = data;
 
   try {
@@ -84,7 +83,7 @@ export const getApplicantById = async (applicantId) => {
 
 export const updateApplicant = async (applicantId, data) => {
   try {
-    const updatedApplicant = await prisma.applicantProfile.update({
+    const applicant = await prisma.applicantProfile.update({
       where: { id: applicantId },
       data: {
         ...data,
@@ -102,7 +101,7 @@ export const updateApplicant = async (applicantId, data) => {
         },
       },
     });
-    return updatedApplicant;
+    return applicant;
   } catch (error) {
     console.error("Error updating applicant:", error);
     throw new Error("Failed to update applicant");

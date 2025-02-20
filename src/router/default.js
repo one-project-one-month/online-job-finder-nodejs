@@ -5,6 +5,6 @@ import authRouter from "../features/auth/auth.router.js";
 const route = express.Router();
 
 route.use("/auth", authRouter);
-route.use("/applicants", applicantRouter);
+route.use("/me", applicantRouter);
 
 export default route;
