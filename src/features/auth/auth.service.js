@@ -48,20 +48,18 @@ export const loginUser = async (email, password) => {
 };
 
 export const changePassword = async (userId, currentPassword, newPassword) => {
-  // Ensure userId is passed correctly
   if (!userId) {
     throw new Error("User ID is required");
   }
 
-  // Find user by ID
   const user = await prisma.user.findUnique({
     where: {
-      id: userId, // Ensure userId is passed here, which is typically from the JWT or session
+      id: userId,
     },
     select: {
       id: true,
       email: true,
-      password: true, // Don't select password unless you need to verify the old one
+      password: true,
     },
   });
 
@@ -88,6 +86,9 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
 export const authUser = async (userId) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
+    include: {
+      role: true,
+    },
     select: {
       id: true,
       username: true,

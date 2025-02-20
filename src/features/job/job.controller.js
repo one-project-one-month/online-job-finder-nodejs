@@ -1,5 +1,11 @@
 import { StatusCode } from "../../errors/StatusCode.js";
-import { createJob, getAllJob } from "./job.service.js";
+import {
+  createJob,
+  destoryJob,
+  getAllJob,
+  getJobById,
+  updateJob,
+} from "./job.service.js";
 
 export const createJobController = async (req, res) => {
   try {
@@ -22,6 +28,35 @@ export const getAllJobController = async (req, res) => {
     };
     const jobs = await getAllJob(filters);
     res.json({ jobs });
+  } catch (error) {
+    res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const getJobByIdController = async (req, res) => {
+  try {
+    const job = await getJobById(req.params.id);
+    res.status(StatusCode.SUCCESS).json({ data: job });
+  } catch (error) {
+    res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const updateJobController = async (req, res) => {
+  try {
+    const job = await updateJob(req.body, req.params.id);
+    res.status(StatusCode.SUCCESS).json({ data: job });
+  } catch (error) {
+    console.log(error);
+
+    res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const destoryJobController = async (req, res) => {
+  try {
+    await destoryJob(req.params.id);
+    res.status(StatusCode.SUCCESS).json({ message: "success" });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
   }

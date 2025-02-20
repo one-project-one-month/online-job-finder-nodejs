@@ -2,6 +2,9 @@ import { number, object, string } from "zod";
 
 export const jobSchema = object({
   body: object({
+    companyId: string({
+      required_error: "company field is required",
+    }),
     title: string({
       required_error: "name field is required",
     }),

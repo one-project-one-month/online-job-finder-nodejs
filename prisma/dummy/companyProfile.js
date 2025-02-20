@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const companies = [
   {
-    userId: 1,
+    userId: "cc1b5d80-eb83-4648-9d14-d0246fdbf05c",
     companyName: "Tech Solutions Ltd.",
     phone: "+1-800-123-4567",
     website: "https://techsolutions.com",
@@ -13,7 +13,7 @@ export const companies = [
     version: 1,
   },
   {
-    userId: 1,
+    userId: "cc1b5d80-eb83-4648-9d14-d0246fdbf05c",
     companyName: "Data Innovators Inc.",
     phone: "+44-20-7946-0123",
     website: "https://datainnovators.com",
@@ -23,7 +23,7 @@ export const companies = [
     version: 1,
   },
   {
-    userId: 1,
+    userId: "cc1b5d80-eb83-4648-9d14-d0246fdbf05c",
     companyName: "Marketing Gurus LLC",
     phone: "+33-1-2345-6789",
     website: "https://marketinggurus.com",

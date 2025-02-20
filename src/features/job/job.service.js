@@ -35,7 +35,6 @@ export const createJob = async (data) => {
     });
     return job;
   } catch (error) {
-    console.log("Error creating job:", error.message);
     throw new Error("Failed to create job", error.message);
   }
 };
@@ -107,5 +106,101 @@ export const getAllJob = async (filters) => {
     console.log(error);
 
     throw new Error("fail to fetch job data", error.message);
+  }
+};
+
+export const getJobById = async (jobId) => {
+  try {
+    const job = await prisma.job.findUnique({
+      where: { id: jobId },
+      select: {
+        id: true,
+        title: true,
+        companyId: true,
+        jobCategoryId: true,
+        locationId: true,
+        type: true,
+        description: true,
+        requirements: true,
+        numOfPosts: true,
+        salary: true,
+        address: true,
+        status: true,
+        version: true,
+        company: {
+          select: {
+            companyName: true,
+          },
+        },
+        location: {
+          select: {
+            name: true,
+          },
+        },
+        category: {
+          select: {
+            industry: true,
+          },
+        },
+      },
+    });
+    return job;
+  } catch (error) {
+    throw new Error("Fail to featch job", error.message);
+  }
+};
+
+export const updateJob = async (data, jobId) => {
+  try {
+    const job = await prisma.job.update({
+      where: { id: jobId },
+      data: {
+        ...data,
+      },
+      select: {
+        id: true,
+        title: true,
+        companyId: true,
+        jobCategoryId: true,
+        locationId: true,
+        type: true,
+        description: true,
+        requirements: true,
+        numOfPosts: true,
+        salary: true,
+        address: true,
+        status: true,
+        version: true,
+        company: {
+          select: {
+            companyName: true,
+          },
+        },
+        location: {
+          select: {
+            name: true,
+          },
+        },
+        category: {
+          select: {
+            industry: true,
+          },
+        },
+      },
+    });
+    return job;
+  } catch (error) {
+    throw new Error("Fail to update job", error.message);
+  }
+};
+
+export const destoryJob = async (jobId) => {
+  try {
+    const job = await prisma.job.delete({
+      where: { id: jobId },
+    });
+    return job;
+  } catch (error) {
+    throw new Error("fail to delete job", error.message);
   }
 };
