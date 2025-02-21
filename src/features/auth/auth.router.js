@@ -8,7 +8,7 @@ import {
   changePasswordSchema,
   loginSchema,
   registerSchema,
-} from "./auth.vaidation.js";
+} from "./auth.validation.js";
 import validate from "../../middleware/validate.js";
 import { changePasswordController } from "./auth.controller.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";

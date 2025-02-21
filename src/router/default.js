@@ -1,4 +1,6 @@
 import express from "express";
+import applicantRouter from "../features/applicant/applicant.router.js";
+import authRouter from "../features/auth/auth.router.js";
 import authRouter from "../features/auth/auth.router.js";
 import locationRouter from "../features/locations/location.route.js";
 import skillRouter from "../features/skills/skill.route.js";
@@ -8,6 +10,7 @@ import jobRouter from "../features/job/job.router.js";
 const route = express.Router();
 
 route.use("/auth", authRouter);
+route.use("/me", applicantRouter);
 route.use("/location", locationRouter);
 route.use("/skill", skillRouter);
 route.use("/job_category", jobCategoryRouter);
