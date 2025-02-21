@@ -19,6 +19,7 @@ const adminMiddleware = async (req, res, next) => {
         .status(StatusCode.FORBIDDEN)
         .json({ message: "Forbidden: Admin access only" });
     }
+    req.user = user;
 
     next();
   } catch (error) {
