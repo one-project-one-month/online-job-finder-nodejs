@@ -32,6 +32,12 @@ export const getLocations = async () => {
       select: {
         id: true,
         name: true,
+        jobs: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
     });
     return locations;
@@ -47,6 +53,12 @@ export const getLocationById = async (locationId) => {
       select: {
         id: true,
         name: true,
+        jobs: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
     });
     return location;

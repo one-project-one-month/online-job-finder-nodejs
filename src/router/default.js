@@ -8,6 +8,7 @@ import authRouter from "../features/auth/auth.router.js";
 import applicationRouter from "../features/application/application.router.js";
 import userRouter from "../features/user/user.route.js";
 import applicantSkillRouter from "../features/applicant_skill/applicant_skill.router.js";
+import jobSkillRouter from "../features/job_skill/job_skill.router.js";
 
 const route = express.Router();
 
@@ -20,5 +21,6 @@ route.use("/applicants", applicantRouter);
 route.use("/jobs", applicationRouter);
 route.use("/accounts", userRouter);
 route.use("/applicant/skill", applicantSkillRouter);
+route.use("/job/skill", jobSkillRouter);
 
 export default route;

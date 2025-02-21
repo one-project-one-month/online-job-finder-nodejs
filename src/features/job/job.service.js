@@ -57,6 +57,9 @@ export const getAllJob = async (filters) => {
             },
           },
         }),
+        orderBy: {
+          createdAt: "desc",
+        },
         ...(category && {
           category: {
             industry: {
