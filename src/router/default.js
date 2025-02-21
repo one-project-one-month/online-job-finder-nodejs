@@ -12,5 +12,9 @@ const route = express.Router();
 route.use("/auth", authRouter);
 route.use("/applicants", applicantRouter);
 route.use("/recruiter", recruiterRouter);
+route.use("/location", locationRouter);
+route.use("/skill", skillRouter);
+route.use("/job_category", jobCategoryRouter);
+route.use("/jobs", jobRouter);
 
 export default route;
