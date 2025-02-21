@@ -13,8 +13,7 @@ async function main() {
   await locationSeeder();
   await skillSeeder();
   await jobCategoriesSeeder();
-  // await applicantProfileSeeder();
-  // await companyProfileSeeder();
+  //await companyProfileSeeder();
 }
 
 main()
