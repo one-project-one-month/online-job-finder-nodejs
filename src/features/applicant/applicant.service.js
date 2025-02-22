@@ -47,6 +47,13 @@ export const getApplicants = async () => {
             username: true,
           },
         },
+        Review: {
+          select: {
+            id: true,
+            rating: true,
+            comment: true,
+          },
+        },
       },
     });
 
