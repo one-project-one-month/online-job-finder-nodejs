@@ -12,7 +12,7 @@ export const getRecruiterController = async (req, res) => {
 
 export const recruiterCreateController = async (req, res) => {
   try {
-    const recruiter = await createRecruiter(req.body);
+    const recruiter = await createRecruiter(req.body, req);
     res.status(StatusCode.SUCCESS).json({ status: "success", data: recruiter });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ status: "error", error: error.message });

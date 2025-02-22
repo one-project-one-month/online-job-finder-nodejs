@@ -21,8 +21,9 @@ export const getRecruiters = async () => {
 }
 
 export const createRecruiter = async (data, req) => {
-  console.log(data, req)
-  const { companyName, phone, website, address, locationId, description, version, userId } = data;
+  // console.log(req.user.id);
+  const userId = req.user.id;
+  const { companyName, phone, website, address, locationId, description, version } = data;
   try {
     const recruiter = await prisma.companyProfile.create({
       data: {
@@ -34,7 +35,6 @@ export const createRecruiter = async (data, req) => {
         description: description || null,
         version: version || 1,
         userId
-
       },
     });
   } catch (error) {
