@@ -28,6 +28,7 @@ export const getAllUsersAccount = async () => {
           select: {
             id: true,
             fullName: true,
+            SavedJob: true,
           },
         },
         companyProfile: {

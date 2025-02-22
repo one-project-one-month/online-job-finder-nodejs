@@ -74,3 +74,29 @@ export const getJobSkillById = async (jobSkillId) => {
     throw new Error("Fail to fetch job skill ", error.message);
   }
 };
+
+export const updateJobSkill = async (jobSkillId, data) => {
+  try {
+    const jobSkill = await prisma.jobSkill.update({
+      where: { id: jobSkillId },
+      data: {
+        ...data,
+      },
+    });
+    return jobSkill;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Fail to update job skill ", error.message);
+  }
+};
+
+export const destroyJobSkill = async (jobSkillId) => {
+  try {
+    const jobSkill = await prisma.jobSkill.delete({
+      where: { id: jobSkillId },
+    });
+    return jobSkill;
+  } catch (error) {
+    throw new Error("Fail to delete job skill ", error.message);
+  }
+};

@@ -29,7 +29,6 @@ export const createApplicant = async (data, req) => {
 
     return applicant;
   } catch (error) {
-    console.error("Error creating applicant:", error);
     throw new Error("Failed to create applicant.");
   }
 };
@@ -53,7 +52,6 @@ export const getApplicants = async () => {
 
     return applicants;
   } catch (error) {
-    console.error("Error fetching applicants:", error);
     throw new Error("Failed to fetch applicants");
   }
 };
@@ -77,7 +75,6 @@ export const getApplicantById = async (applicantId) => {
     });
     return applicant;
   } catch (error) {
-    console.error("Error fetching applicant:", error);
     throw new Error("Failed to fetch applicant");
   }
 };
@@ -104,7 +101,6 @@ export const updateApplicant = async (applicantId, data) => {
     });
     return updatedApplicant;
   } catch (error) {
-    console.error("Error updating applicant:", error);
     throw new Error("Failed to update applicant");
   }
 };
@@ -116,7 +112,6 @@ export const destroyApplicant = async (applicantId) => {
     });
     return applicant;
   } catch (error) {
-    console.error("Error deleting applicant:", error);
     throw new Error("Failed to delete applicant.");
   }
 };
