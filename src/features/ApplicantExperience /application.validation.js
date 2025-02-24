@@ -2,9 +2,6 @@ import { boolean, date, object, string } from "zod";
 
 export const applicantCategorySchema = object({
   body: object({
-    applicantId: string({
-      required_error: "applicant is required",
-    }),
     companyName: string({
       required_error: "industry is required",
     }),
@@ -14,7 +11,7 @@ export const applicantCategorySchema = object({
     jobType: string({
       required_error: "jobType is required",
     }),
-    startDate: date({
+    location: string({
       required_error: "location is required",
     }),
     currentlyWorking: boolean({

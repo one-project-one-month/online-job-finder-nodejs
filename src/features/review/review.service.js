@@ -2,7 +2,6 @@ import prisma from "../../database/index.js";
 
 export const createReview = async (data, req) => {
   const userId = req.user.id;
-  console.log(userId);
 
   const { companyId, applicantId, rating, comment, version } = data;
   try {
