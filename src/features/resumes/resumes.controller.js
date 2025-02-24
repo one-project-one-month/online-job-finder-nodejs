@@ -3,7 +3,6 @@ import {
   createResume,
   getResumes,
   getResumeById,
-  updateResume,
   destroyResume,
 } from "./resumes.service.js";
 
@@ -32,17 +31,6 @@ export const getResumesController = async (req, res) => {
 export const getResumeByIdController = async (req, res) => {
   try {
     const resume = await getResumeById(req.params.id);
-    res.status(StatusCode.SUCCESS).json({ data: resume });
-  } catch (error) {
-    res
-      .status(StatusCode.BAD_REQUEST)
-      .json({ status: "error", message: error.message });
-  }
-};
-
-export const updateResumeController = async (req, res) => {
-  try {
-    const resume = await updateResume(req.params.id, req.body);
     res.status(StatusCode.SUCCESS).json({ data: resume });
   } catch (error) {
     res

@@ -1,24 +1,45 @@
 import prisma from "../../database/index.js";
+import { resumeSchema } from "./resumes.validation.js";
+import uploadToCloudinary from "../../utilities/uploadToCloudinary.js";
+import deleteImageByUrl from "../../utilities/deleteUrlFromCloudinary.js";
 
 export const createResume = async (data, req) => {
+  // data == req.body
   const userId = req.user.id;
-  console.log(userId);
-  const { filePath, version } = data;
+  const file = req.file;
+  const { version } = data;
+
+  if (!file) {
+    throw new Error("No file uploaded");
+  }
+
+  const validMimeTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "application/pdf",
+  ];
+
+  if (!validMimeTypes.includes(file.mimetype)) {
+    throw new Error(
+      "Invalid file type. Only PNG, JPEG, JPG, or PDF files are allowed."
+    );
+  }
 
   try {
-    // Check if resume already exists
-    const existingResume = await prisma.resume.findUnique({
-      where: { id: userId },
-    });
+    const uploadedUrl = await uploadToCloudinary(file.buffer);
+    // need to pass this in for zod validation
+    data.filePath = uploadedUrl;
 
-    if (existingResume) {
-      throw new Error("Resume already exist.");
-    }
+    resumeSchema.parse({
+      filePath: data.filePath,
+      version: data.version,
+    });
 
     const resume = await prisma.resume.create({
       data: {
         userId,
-        filePath,
+        filePath: uploadedUrl,
         version: version || 1,
       },
     });
@@ -43,6 +64,9 @@ export const getResumes = async () => {
             username: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -76,37 +100,14 @@ export const getResumeById = async (resumeId) => {
   }
 };
 
-export const updateResume = async (resumeId, data) => {
-  try {
-    const resume = await prisma.resume.update({
-      where: { id: resumeId },
-      data: {
-        ...data,
-      },
-      select: {
-        id: true,
-        userId: true,
-        filePath: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-          },
-        },
-      },
-    });
-    return resume;
-  } catch (error) {
-    console.error("Error updating resume:", error);
-    throw new Error("Failed to update resume");
-  }
-};
-
 export const destroyResume = async (resumeId) => {
   try {
     const resume = await prisma.resume.delete({
       where: { id: resumeId },
     });
+
+    deleteImageByUrl(resume.filePath);
+
     return resume;
   } catch (error) {
     console.error("Error deleting resume:", error);

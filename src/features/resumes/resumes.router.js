@@ -3,29 +3,21 @@ import {
   createResumeController,
   getResumesController,
   getResumeByIdController,
-  updateResumeController,
   destroyResumeController,
 } from "./resumes.controller.js";
-import validate from "../../middleware/validate.js";
-import { resumeSchema } from "./resumes.validation.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";
+import upload from "../../middleware/multer.js";
 
 const resumeRouter = express.Router();
 
 resumeRouter.post(
   "/",
-  validate(resumeSchema),
   authenticateToken,
+  upload.single("resume"),
   createResumeController
 );
 resumeRouter.get("/", getResumesController);
 resumeRouter.get("/:id", getResumeByIdController);
-resumeRouter.put(
-  "/:id",
-  validate(resumeSchema),
-  authenticateToken,
-  updateResumeController
-);
 resumeRouter.delete("/:id", authenticateToken, destroyResumeController);
 
 export default resumeRouter;
