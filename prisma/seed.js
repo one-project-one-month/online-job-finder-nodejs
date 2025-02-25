@@ -12,9 +12,13 @@ async function main() {
   await skillSeeder();
   await jobCategoriesSeeder();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //await companyProfileSeeder();
 >>>>>>> a107096add5e70b6a84edd8623bf490de7a17b4c
+=======
+
+>>>>>>> 67073bac3e9648509c07bc47bb7900ce55fe6e4a
 }
 
 main()
