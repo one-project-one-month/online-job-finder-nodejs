@@ -9,7 +9,7 @@ import {
 
 export const createApplicantSkillController = async (req, res) => {
   try {
-    const newApplicantSkill = await createApplicantSkill(req.body);
+    const newApplicantSkill = await createApplicantSkill(req.body, req);
     res.status(StatusCode.SUCCESS).json({ data: newApplicantSkill });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });

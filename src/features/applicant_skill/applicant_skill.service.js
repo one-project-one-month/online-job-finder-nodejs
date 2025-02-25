@@ -1,17 +1,28 @@
 import prisma from "../../database/index.js";
 
-export const createApplicantSkill = async (data) => {
+export const createApplicantSkill = async (data, req) => {
+  const userId = req.user.id;
+  console.log(userId);
+
   const { applicantId, skillId, version } = data;
   try {
+    const applicantProfile = await prisma.applicantProfile.findMany({
+      where: {
+        userId,
+      },
+    });
+
     const newApplicantSkill = await prisma.applicantSkill.create({
       data: {
-        applicantId,
+        applicantId: applicantProfile[0].id,
         skillId,
         version: version || 1,
       },
     });
     return newApplicantSkill;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Fail to create applicant skill", error.message);
   }
 };

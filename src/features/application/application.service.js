@@ -1,13 +1,20 @@
 import prisma from "../../database/index.js";
 
 //apply job
-export const applyJob = async (data) => {
+export const applyJob = async (data, req) => {
+  const userId = req.user.id;
   const { applicantId, resumeId, jobId, status, version } = data;
   try {
+    const applicantProfile = await prisma.applicantProfile.findMany({
+      where: {
+        userId,
+      },
+    });
+
     const application = await prisma.application.create({
       data: {
         jobId,
-        applicantId,
+        applicantId: applicantProfile[0].id,
         resumeId: resumeId || null,
         status: status || "Pending",
         version: version || 1,
@@ -19,40 +26,71 @@ export const applyJob = async (data) => {
   }
 };
 
-export const getSaveJobs = async () => {
+export const getSaveJobs = async (req) => {
+  const userId = req.user.id;
+  console.log(userId);
+
   try {
-    const savedJobs = await prisma.savedJob.findFirst({
+    //const savedJobs = await prisma.savedJob.findFirst({
+    //  select: {
+    //    id: true,
+    //    applicantId: true,
+    //    jobId: true,
+    //    version: true,
+    //    job: {
+    //      select: {
+    //        id: true,
+    //        title: true,
+    //        description: true,
+    //        requirements: true,
+    //        salary: true,
+    //        type: true,
+    //        address: true,
+    //      },
+    //    },
+    //  },
+    //});
+    const savedJob = await prisma.applicantProfile.findUnique({
+      where: { userId },
       select: {
-        id: true,
-        applicantId: true,
-        jobId: true,
-        version: true,
-        job: {
+        userId: true,
+        fullName: true,
+        phone: true,
+        user: {
           select: {
             id: true,
-            title: true,
-            description: true,
-            requirements: true,
-            salary: true,
-            type: true,
-            address: true,
+            username: true,
+          },
+        },
+        SavedJob: {
+          select: {
+            id: true,
           },
         },
       },
     });
-    return savedJobs;
+    return savedJob;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Failed to get saved jobs: ", error.message);
   }
 };
 
-export const saveJob = async (data) => {
+export const saveJob = async (data, req) => {
+  const userId = req.user.id;
   const { jobId, applicantId, version } = data;
   try {
+    const applicantProfile = await prisma.applicantProfile.findMany({
+      where: {
+        userId,
+      },
+    });
+
     const existingSabedJob = await prisma.savedJob.findFirst({
       where: {
         jobId,
-        applicantId,
+        applicantId: applicantProfile[0].id,
       },
     });
     if (existingSabedJob) {
@@ -61,7 +99,7 @@ export const saveJob = async (data) => {
     const savedJob = await prisma.savedJob.create({
       data: {
         jobId,
-        applicantId,
+        applicantId: applicantProfile[0].id,
         version: version || 1,
       },
     });

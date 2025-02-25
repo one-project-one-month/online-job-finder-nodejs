@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "../../database/index.js";
 import jwt from "jsonwebtoken";
-import { json } from "express";
 
 export const registerUser = async (userData) => {
   const { username, email, password } = userData;
@@ -102,6 +101,22 @@ export const authUser = async (userId) => {
         select: {
           id: true,
           fullName: true,
+          skills: {
+            select: {
+              id: true,
+              skillId: true,
+            },
+          },
+          experiences: {
+            select: {
+              companyName: true,
+              location: true,
+              title: true,
+              jobType: true,
+              startDate: true,
+              currentlyWorking: true,
+            },
+          },
         },
       },
       companyProfile: {
@@ -126,4 +141,19 @@ export const authUser = async (userId) => {
     },
   });
   return user;
+};
+
+export const authUserSkill = async (req) => {
+  const userId = req.user.id;
+  try {
+    const applicantProfile = await prisma.applicantProfile.findMany({
+      where: { userId },
+      select: {
+        skills: true,
+      },
+    });
+    return applicantProfile;
+  } catch (error) {
+    throw new Error("fail to fetch user skill", error);
+  }
 };

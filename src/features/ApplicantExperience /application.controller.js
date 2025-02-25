@@ -23,7 +23,7 @@ export const createApplicationExperienceController = async (req, res) => {
 
 export const getApplicationExperienceController = async (req, res) => {
   try {
-    const applicantExperience = await getApplicationExperience();
+    const applicantExperience = await getApplicationExperience(req);
     res.status(StatusCode.SUCCESS).json({ data: applicantExperience });
   } catch (error) {
     res

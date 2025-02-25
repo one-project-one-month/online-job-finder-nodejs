@@ -55,7 +55,7 @@ export const getSkillById = async (skillId) => {
 export const updateSkill = async (skillId, data) => {
   try {
     const existingSkill = await prisma.skill.findUnique({
-      where: { id: data.name },
+      where: { name: data.name },
     });
     if (existingSkill) {
       throw new Error("Skill with this name already exists.");

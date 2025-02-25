@@ -2,7 +2,6 @@ import prisma from "../../database/index.js";
 
 export const createApplicationExperience = async (data, req) => {
   const userId = req.user.id;
-  console.log(userId);
 
   const {
     applicantId,
@@ -34,15 +33,20 @@ export const createApplicationExperience = async (data, req) => {
     });
     return applicationExperience;
   } catch (error) {
-    console.log(error);
-
     throw new Error("Fail to crate", error.message);
   }
 };
 
-export const getApplicationExperience = async () => {
+export const getApplicationExperience = async (req) => {
+  const userId = req.user.id;
   try {
-    const applicantExperience = await prisma.applicantExperience.findMany({});
+    const applicantExperience = await prisma.applicantProfile.findUnique({
+      where: { userId },
+      select: {
+        experiences: true,
+      },
+    });
+
     return applicantExperience;
   } catch (error) {
     throw new Error("fial to fetch application experience", error.message);

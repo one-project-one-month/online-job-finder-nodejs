@@ -9,14 +9,13 @@ import {
 import validate from "../../middleware/validate.js";
 import { applicantSkillSchema } from "./applicant_skill.validation.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";
-import adminMiddleware from "../../middlewares/adminMiddleware.js";
 
 const applicantSkillRouter = express.Router();
 
 applicantSkillRouter.post(
   "/",
   validate(applicantSkillSchema),
-  adminMiddleware,
+  authenticateToken,
   createApplicantSkillController
 );
 applicantSkillRouter.get("/", authenticateToken, getApplicantSkillController);
@@ -29,13 +28,11 @@ applicantSkillRouter.put(
   "/:id",
   validate(applicantSkillSchema),
   authenticateToken,
-  adminMiddleware,
   updateApplicantSkillController
 );
 applicantSkillRouter.delete(
   "/:id",
   authenticateToken,
-  adminMiddleware,
   deleteApplicantSkillController
 );
 

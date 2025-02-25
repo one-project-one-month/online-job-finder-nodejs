@@ -13,7 +13,7 @@ export const applyJobController = async (req, res) => {
     if (!data.applicantId) {
       data.applicantId = "default-applicant-id";
     }
-    const job = await applyJob(data);
+    const job = await applyJob(data, req);
     res.status(StatusCode.SUCCESS).json({ data: job });
   } catch (error) {
     console.log(error);
@@ -24,7 +24,7 @@ export const applyJobController = async (req, res) => {
 
 export const getSaveJobsController = async (req, res) => {
   try {
-    const jobs = await getSaveJobs();
+    const jobs = await getSaveJobs(req);
     res.status(StatusCode.SUCCESS).json({ data: jobs });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
@@ -38,7 +38,7 @@ export const saveJobController = async (req, res) => {
     if (!data.applicantId) {
       data.applicantId = "default-applicant-id";
     }
-    const job = await saveJob(data);
+    const job = await saveJob(data, req);
     res.status(StatusCode.SUCCESS).json({ data: job });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });

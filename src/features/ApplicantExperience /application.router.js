@@ -18,7 +18,11 @@ applicationExperienceRouter.post(
   validate(applicantCategorySchema),
   createApplicationExperienceController
 );
-applicationExperienceRouter.get("/", getApplicationExperienceController);
+applicationExperienceRouter.get(
+  "/",
+  authenticateToken,
+  getApplicationExperienceController
+);
 applicationExperienceRouter.get("/:id", getApplicationExperienceByIdController);
 applicationExperienceRouter.put(
   "/:id",
