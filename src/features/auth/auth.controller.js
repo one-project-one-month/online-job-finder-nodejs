@@ -1,6 +1,7 @@
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
   authUser,
+  authUserSkill,
   changePassword,
   loginUser,
   registerUser,
@@ -71,5 +72,14 @@ export const authUserController = async (req, res) => {
     res
       .status(StatusCode.INTERNAL_SERVER_ERROR)
       .json({ error: "Failed to fetch user" });
+  }
+};
+
+export const authUserSkillController = async (req, res) => {
+  try {
+    const skill = await authUserSkill(req);
+    res.status(StatusCode.SUCCESS).json({ data: skill });
+  } catch (error) {
+    res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: error });
   }
 };

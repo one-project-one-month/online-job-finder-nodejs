@@ -2,7 +2,6 @@ import prisma from "../../database/index.js";
 
 export const createApplicant = async (data, req) => {
   const userId = req.user.id;
-  console.log(userId);
   const { fullName, phone, address, locationId, description, version } = data;
 
   try {
@@ -29,7 +28,6 @@ export const createApplicant = async (data, req) => {
 
     return applicant;
   } catch (error) {
-    console.error("Error creating applicant:", error);
     throw new Error("Failed to create applicant.");
   }
 };
@@ -48,12 +46,23 @@ export const getApplicants = async () => {
             username: true,
           },
         },
+        Review: {
+          select: {
+            id: true,
+            rating: true,
+            comment: true,
+          },
+        },
+        SavedJob: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
     return applicants;
   } catch (error) {
-    console.error("Error fetching applicants:", error);
     throw new Error("Failed to fetch applicants");
   }
 };
@@ -77,14 +86,13 @@ export const getApplicantById = async (applicantId) => {
     });
     return applicant;
   } catch (error) {
-    console.error("Error fetching applicant:", error);
     throw new Error("Failed to fetch applicant");
   }
 };
 
 export const updateApplicant = async (applicantId, data) => {
   try {
-    const updatedApplicant = await prisma.applicantProfile.update({
+    const applicant = await prisma.applicantProfile.update({
       where: { id: applicantId },
       data: {
         ...data,
@@ -102,9 +110,8 @@ export const updateApplicant = async (applicantId, data) => {
         },
       },
     });
-    return updatedApplicant;
+    return applicant;
   } catch (error) {
-    console.error("Error updating applicant:", error);
     throw new Error("Failed to update applicant");
   }
 };
@@ -116,7 +123,6 @@ export const destroyApplicant = async (applicantId) => {
     });
     return applicant;
   } catch (error) {
-    console.error("Error deleting applicant:", error);
     throw new Error("Failed to delete applicant.");
   }
 };

@@ -26,6 +26,9 @@ importers:
       bullmq:
         specifier: ^5.40.2
         version: 5.40.2
+      cloudinary:
+        specifier: ^2.5.1
+        version: 2.5.1
       compression:
         specifier: ^1.8.0
         version: 1.8.0
@@ -843,6 +846,10 @@ packages:
   cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
     engines: {node: '>=12'}
+
+  cloudinary@2.5.1:
+    resolution: {integrity: sha512-CNg6uU53Hl4FEVynkTGpt5bQEAQWDHi3H+Sm62FzKf5uQHipSN2v7qVqS8GRVqeb0T1WNV+22+75DOJeRXYeSQ==}
+    engines: {node: '>=9'}
 
   cluster-key-slot@1.1.2:
     resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
@@ -1684,6 +1691,14 @@ packages:
   pusher@5.2.0:
     resolution: {integrity: sha512-F6LNiZyJsIkoHLz+YurjKZ1HH8V1/cMggn4k97kihjP3uTvm0P4mZzSFeHOWIy+PlJ2VInJBhUFJBYLsFR5cjg==}
     engines: {node: '>= 4.0.0'}
+
+  q@1.5.1:
+    resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
+    engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
+    deprecated: |-
+      You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
+      (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
@@ -2916,6 +2931,11 @@ snapshots:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
 
+  cloudinary@2.5.1:
+    dependencies:
+      lodash: 4.17.21
+      q: 1.5.1
+
   cluster-key-slot@1.1.2: {}
 
   color-convert@2.0.1:
@@ -3858,6 +3878,8 @@ snapshots:
       tweetnacl-util: 0.15.1
     transitivePeerDependencies:
       - encoding
+
+  q@1.5.1: {}
 
   qs@6.13.0:
     dependencies:
