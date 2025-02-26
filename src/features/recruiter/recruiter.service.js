@@ -6,6 +6,7 @@ export const getRecruiters = async () => {
       select: {
         id: true,
         companyName: true,
+        locationId: true,
         phone: true,
         website: true,
         address: true,
@@ -65,6 +66,7 @@ export const getRecruiterById = async (recruiterid) => {
 }
 
 export const updateRecruiter = async (recruiterId, data) => {
+  console.log(recruiterId)
   try {
     const updateRecruiter = await prisma.companyProfile.update({
       where: { id: recruiterId },
