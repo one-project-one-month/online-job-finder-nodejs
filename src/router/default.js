@@ -12,6 +12,7 @@ import applicantSkillRouter from "../features/applicant_skill/applicant_skill.ro
 import jobSkillRouter from "../features/job_skill/job_skill.router.js";
 import reviewRouter from "../features/review/review.router.js";
 import applicationExperienceRouter from "../features/ApplicantExperience /application.router.js";
+import socialMediaRouter from "../features/social/social.router.js";
 
 const route = express.Router();
 
@@ -28,5 +29,6 @@ route.use("/applicant/skill", applicantSkillRouter);
 route.use("/job/skill", jobSkillRouter);
 route.use("/review", reviewRouter);
 route.use("/application/experience", applicationExperienceRouter);
+route.use("/social_media", socialMediaRouter);
 
 export default route;
