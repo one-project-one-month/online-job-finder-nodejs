@@ -86,27 +86,44 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
 export const authUser = async (userId) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: {
-      role: true,
-    },
     select: {
       id: true,
       username: true,
       profilePhoto: true,
       email: true,
-      roleId: true,
       isInformationCompleted: true,
       version: true,
-      createdAt: true,
-      updatedAt: true,
       role: {
-        select: { id: true, name: true },
+        select: {
+          name: true,
+        },
+      },
+      applicantProfile: {
+        select: {
+          id: true,
+          fullName: true,
+        },
+      },
+      companyProfile: {
+        select: {
+          id: true,
+          companyName: true,
+          phone: true,
+          website: true,
+          address: true,
+        },
+      },
+      socialMedia: {
+        select: {
+          link: true,
+        },
+      },
+      resumes: {
+        select: {
+          filePath: true,
+        },
       },
     },
   });
-  //return {
-  //  username: user.username,
-  //  email: user.email,
-  //};
   return user;
 };
