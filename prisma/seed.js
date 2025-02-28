@@ -4,8 +4,6 @@ import jobCategoriesSeeder from "./seeder/jobCategorySeeder.js";
 import locationSeeder from "./seeder/location.js";
 import roleSeeder from "./seeder/roleSeeder.js";
 import skillSeeder from "./seeder/skillSeeder.js";
-// import applicantProfileSeeder from "./seeder/applicantProfileSeeder.js";
-// import companyProfileSeeder from "./seeder/companyProfileSeeder.js";
 
 async function main() {
   await roleSeeder();
@@ -13,7 +11,6 @@ async function main() {
   await locationSeeder();
   await skillSeeder();
   await jobCategoriesSeeder();
-  //await companyProfileSeeder();
 }
 
 main()
