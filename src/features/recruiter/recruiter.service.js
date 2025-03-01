@@ -6,6 +6,7 @@ export const getRecruiters = async () => {
       select: {
         id: true,
         companyName: true,
+        locationId: true,
         phone: true,
         website: true,
         address: true,
@@ -21,7 +22,7 @@ export const getRecruiters = async () => {
 };
 
 export const createRecruiter = async (data, req) => {
-  console.log(data, req);
+  const userId = req.user.id;
   const {
     companyName,
     phone,
@@ -30,7 +31,6 @@ export const createRecruiter = async (data, req) => {
     locationId,
     description,
     version,
-    userId,
   } = data;
   try {
     const recruiter = await prisma.companyProfile.create({
@@ -73,6 +73,7 @@ export const getRecruiterById = async (recruiterid) => {
 };
 
 export const updateRecruiter = async (recruiterId, data) => {
+  console.log(recruiterId);
   try {
     const updateRecruiter = await prisma.companyProfile.update({
       where: { id: recruiterId },
