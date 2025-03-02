@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getUserById,
   destroyUser,
+  getUserSavedJobs,
 } from "./user.service.js";
 
 export const createUserController = async (req, res) => {
@@ -39,6 +40,17 @@ export const destroyUserController = async (req, res) => {
   try {
     await destroyUser(req.params.id);
     res.status(StatusCode.SUCCESS).json({ status: "success" });
+  } catch (error) {
+    res
+      .status(StatusCode.BAD_REQUEST)
+      .json({ status: "error", message: error.message });
+  }
+};
+
+export const getUserSavedJobsController = async (req, res) => {
+  try {
+    const savedJobs = await getUserSavedJobs(req);
+    res.status(StatusCode.SUCCESS).json({ data: savedJobs });
   } catch (error) {
     res
       .status(StatusCode.BAD_REQUEST)

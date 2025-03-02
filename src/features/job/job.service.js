@@ -70,6 +70,9 @@ export const getAllJob = async (filters) => {
           },
         }),
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       select: {
         id: true,
         title: true,

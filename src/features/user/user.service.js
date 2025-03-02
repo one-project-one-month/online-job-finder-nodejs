@@ -96,6 +96,7 @@ export const getAllUsers = async () => {
           select: {
             id: true,
             fullName: true,
+            SavedJob: true,
           },
         },
         companyProfile: {
@@ -145,6 +146,16 @@ export const getUserById = async (userId) => {
           select: {
             id: true,
             fullName: true,
+            experiences: {
+              select: {
+                companyName: true,
+                location: true,
+                title: true,
+                jobType: true,
+                startDate: true,
+                currentlyWorking: true,
+              },
+            },
           },
         },
         companyProfile: {
@@ -182,5 +193,47 @@ export const destroyUser = async (userId) => {
     return user;
   } catch (error) {
     throw new Error("Failed to delete user", error.message);
+  }
+};
+
+export const getUserSavedJobs = async (req) => {
+  const userId = req.user.id;
+
+  try {
+    const applicant = await prisma.applicantProfile.findUnique({
+      where: { userId: userId },
+      select: {
+        id: true,
+        fullName: true,
+        SavedJob: {
+          select: {
+            id: true,
+            jobId: true,
+            version: true,
+            createdAt: true,
+            job: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                requirements: true,
+                salary: true,
+                type: true,
+                address: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!applicant) {
+      throw new Error("Applicant profile not found");
+    }
+
+    return applicant.SavedJob;
+  } catch (error) {
+    console.error("Failed to get saved jobs:", error);
+    throw new Error("Failed to get saved jobs.");
   }
 };
