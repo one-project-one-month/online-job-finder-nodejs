@@ -1,15 +1,15 @@
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
-  createUser,
+  updateUser,
   getAllUsers,
   getUserById,
   destroyUser,
   getUserSavedJobs,
 } from "./user.service.js";
 
-export const createUserController = async (req, res) => {
+export const updateUserController = async (req, res) => {
   try {
-    const user = await createUser(req.body, req);
+    const user = await updateUser(req.params.id, req.body);
     res.status(StatusCode.SUCCESS).json({ data: user });
   } catch (error) {
     res

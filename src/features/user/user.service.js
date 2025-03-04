@@ -1,72 +1,49 @@
 import prisma from "../../database/index.js";
-import uploadToCloudinary from "../../utilities/uploadToCloudinary.js";
-import deleteImageByUrl from "../../utilities/deleteUrlFromCloudinary.js";
-import { userSchema } from "./user.validation.js";
 
-export const createUser = async (data, req) => {
-  // data == req.body
-  const file = req.file;
-  let uploadedUrl = "";
-
-  const { username, email, password, roleId, isInformationCompleted, version } =
-    data;
-
-  if (file) {
-    const validMimeTypes = [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-      "application/pdf",
-    ];
-    if (!validMimeTypes.includes(file.mimetype)) {
-      throw new Error(
-        "Invalid file type. Only PNG, JPEG, JPG, or PDF files are allowed."
-      );
-    }
-  }
-
+export const updateUser = async (userId, data) => {
   try {
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      throw new Error("User already exists.");
-    }
-
-    if (file) {
-      uploadedUrl = await uploadToCloudinary(file.buffer);
-      data.filePath = uploadedUrl; // Add filePath for validation
-      console.log(uploadedUrl);
-    }
-
-    // Validate input with Zod
-    userSchema.parse({
-      body: {
-        ...data,
-        version: data.version || 1,
-        filePath: uploadedUrl || "",
-      },
-    });
-
-    // Create user in database
-    const user = await prisma.user.create({
+    const user = await prisma.user.update({
+      where: { id: userId },
       data: {
-        username,
-        profilePhoto: uploadedUrl,
-        email,
-        password,
-        roleId,
-        isInformationCompleted,
-        version: version || 1,
+        ...data,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+        isInformationCompleted: true,
+        roleId: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+        applicantProfile: {
+          select: {
+            fullName: true,
+          },
+        },
+        companyProfile: {
+          select: {
+            companyName: true,
+          },
+        },
+        socialMedia: {
+          select: {
+            link: true,
+          },
+        },
+        resumes: {
+          select: {
+            filePath: true,
+          },
+        },
       },
     });
-
     return user;
   } catch (error) {
-    console.error("Error creating user:", error);
-    throw new Error(error.message || "Failed to create user");
+    throw new Error("Failed to update user");
   }
 };
 
@@ -189,7 +166,6 @@ export const destroyUser = async (userId) => {
   try {
     const user = await prisma.user.delete({ where: { id: userId } });
 
-    deleteImageByUrl(user.profilePhoto);
     return user;
   } catch (error) {
     throw new Error("Failed to delete user", error.message);

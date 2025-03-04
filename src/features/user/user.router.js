@@ -1,21 +1,23 @@
 import express from "express";
 import {
-  createUserController,
+  updateUserController,
   getAllUsersController,
   getUserByIdController,
   destroyUserController,
+  getUserSavedJobsController,
 } from "./user.controller.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";
 import adminMiddleware from "../../middlewares/adminMiddleware.js";
-import upload from "../../middleware/multer.js";
+import { userSchema } from "./user.validation.js";
+import validate from "../../middleware/validate.js";
 
 const userRouter = express.Router();
 
-userRouter.post(
-  "/",
+userRouter.put(
+  "/:id",
+  validate(userSchema),
   authenticateToken,
-  upload.single("profilePhoto"),
-  createUserController
+  updateUserController
 );
 userRouter.get("/", authenticateToken, getAllUsersController);
 userRouter.get(
@@ -24,6 +26,7 @@ userRouter.get(
   adminMiddleware,
   getUserByIdController
 );
+userRouter.get("/saves", authenticateToken, getUserSavedJobsController);
 userRouter.delete("/:id", authenticateToken, destroyUserController);
 
 export default userRouter;

@@ -101,8 +101,6 @@ export const authUser = async (userId) => {
         select: {
           id: true,
           fullName: true,
-<<<<<<< HEAD
-=======
           skills: {
             select: {
               id: true,
@@ -119,7 +117,6 @@ export const authUser = async (userId) => {
               currentlyWorking: true,
             },
           },
->>>>>>> 7b0e60d2298a1a848d13933e8b51abaaf10c4758
         },
       },
       companyProfile: {
