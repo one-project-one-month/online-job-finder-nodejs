@@ -1,10 +1,55 @@
-// for handling with database CRUD to apply in controller
-
 import prisma from "../../database/index.js";
 
-export const getAllUsersAccount = async () => {
+export const updateUser = async (userId, data) => {
   try {
-    const accounts = await prisma.user.findMany({
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...data,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+        isInformationCompleted: true,
+        roleId: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+        applicantProfile: {
+          select: {
+            fullName: true,
+          },
+        },
+        companyProfile: {
+          select: {
+            companyName: true,
+          },
+        },
+        socialMedia: {
+          select: {
+            link: true,
+          },
+        },
+        resumes: {
+          select: {
+            filePath: true,
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    throw new Error("Failed to update user");
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const users = await prisma.user.findMany({
       where: {
         role: {
           name: {
@@ -52,15 +97,15 @@ export const getAllUsersAccount = async () => {
         },
       },
     });
-    return accounts;
+    return users;
   } catch (error) {
     throw new Error("Failed to fetch users", error.message);
   }
 };
 
-export const getUserAccount = async (userId) => {
+export const getUserById = async (userId) => {
   try {
-    const account = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -111,9 +156,19 @@ export const getUserAccount = async (userId) => {
         },
       },
     });
-    return account;
+    return user;
   } catch (error) {
     throw new Error("fail to fetch user data", error.message);
+  }
+};
+
+export const destroyUser = async (userId) => {
+  try {
+    const user = await prisma.user.delete({ where: { id: userId } });
+
+    return user;
+  } catch (error) {
+    throw new Error("Failed to delete user", error.message);
   }
 };
 

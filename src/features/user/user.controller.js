@@ -1,27 +1,49 @@
-/// for hanlding logic
-
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
-  getAllUsersAccount,
-  getUserAccount,
+  updateUser,
+  getAllUsers,
+  getUserById,
+  destroyUser,
   getUserSavedJobs,
 } from "./user.service.js";
 
-export const getAllUsersAccountController = async (req, res) => {
+export const updateUserController = async (req, res) => {
   try {
-    const users = await getAllUsersAccount();
+    const user = await updateUser(req.params.id, req.body);
+    res.status(StatusCode.SUCCESS).json({ data: user });
+  } catch (error) {
+    res
+      .status(StatusCode.BAD_REQUEST)
+      .json({ status: "error", message: error.message });
+  }
+};
+
+export const getAllUsersController = async (req, res) => {
+  try {
+    const users = await getAllUsers();
     res.status(StatusCode.SUCCESS).json({ data: users });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
   }
 };
 
-export const getUserAccountByIdController = async (req, res) => {
+export const getUserByIdController = async (req, res) => {
   try {
-    const user = await getUserAccount(req.params.id);
+    const user = await getUserById(req.params.id);
     res.status(StatusCode.SUCCESS).json({ data: user });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const destroyUserController = async (req, res) => {
+  try {
+    await destroyUser(req.params.id);
+    res.status(StatusCode.SUCCESS).json({ status: "success" });
+  } catch (error) {
+    res
+      .status(StatusCode.BAD_REQUEST)
+      .json({ status: "error", message: error.message });
   }
 };
 

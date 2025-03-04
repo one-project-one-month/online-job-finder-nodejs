@@ -8,13 +8,12 @@ import jobCategoryRouter from "../features/job_category/job_category.router.js";
 import jobRouter from "../features/job/job.router.js";
 import authRouter from "../features/auth/auth.router.js";
 import applicationRouter from "../features/application/application.router.js";
-import userRouter from "../features/user/user.route.js";
+import userRouter from "../features/user/user.router.js";
 import applicantSkillRouter from "../features/applicant_skill/applicant_skill.router.js";
 import jobSkillRouter from "../features/job_skill/job_skill.router.js";
 import reviewRouter from "../features/review/review.router.js";
 import applicationExperienceRouter from "../features/ApplicantExperience /application.router.js";
 import socialMediaRouter from "../features/social/social.router.js";
-
 
 const route = express.Router();
 
