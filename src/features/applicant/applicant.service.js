@@ -2,6 +2,8 @@ import prisma from "../../database/index.js";
 
 export const createApplicant = async (data, req) => {
   const userId = req.user.id;
+  console.log(userId);
+
   const { fullName, phone, address, locationId, description, version } = data;
 
   try {
@@ -28,6 +30,8 @@ export const createApplicant = async (data, req) => {
 
     return applicant;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Failed to create applicant.");
   }
 };

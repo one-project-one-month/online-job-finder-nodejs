@@ -15,6 +15,6 @@ app.use(helmet());
 app.use(express.json());
 
 //routes
-app.use("/api", route);
+app.use("/api/v1", route);
 
 export default app;
