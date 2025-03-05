@@ -7,8 +7,6 @@ import {
 } from "./resumes.controller.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";
 import upload from "../../middleware/multer.js";
-import validate from "../../middleware/validate.js";
-import { resumeSchema } from "./resumes.validation.js";
 
 const resumeRouter = express.Router();
 

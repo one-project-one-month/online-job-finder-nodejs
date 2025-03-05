@@ -14,6 +14,7 @@ async function main() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //await companyProfileSeeder();
 >>>>>>> a107096add5e70b6a84edd8623bf490de7a17b4c
@@ -23,6 +24,8 @@ async function main() {
 =======
 
 >>>>>>> 7b0e60d2298a1a848d13933e8b51abaaf10c4758
+=======
+>>>>>>> d152c4b57f09b8c2ae55ec1d45d5696954f24893
 }
 
 main()
