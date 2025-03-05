@@ -14,6 +14,8 @@ import recruiterRouter from "../features/recruiter/recruiter.route.js";
 import locationRouter from "../features/locations/location.route.js";
 import jobCategoryRouter from "../features/job_category/job_category.router.js";
 import socialMediaRouter from "../features/social/social.router.js";
+import profilePhotoRouter from "../features/profilePhoto/profilePhoto.router.js";
+
 const route = express.Router();
 
 route.use("/auth", authRouter);
@@ -31,5 +33,6 @@ route.use("/job/skill", jobSkillRouter);
 route.use("/review", reviewRouter);
 route.use("/application/experience", applicationExperienceRouter);
 route.use("/social_media", socialMediaRouter);
+route.use("/profile-photo", profilePhotoRouter);
 
 export default route;

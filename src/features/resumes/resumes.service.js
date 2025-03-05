@@ -106,7 +106,7 @@ export const destroyResume = async (resumeId) => {
       where: { id: resumeId },
     });
 
-    deleteImageByUrl(resume.filePath);
+    await deleteImageByUrl(resume.filePath);
 
     return resume;
   } catch (error) {
