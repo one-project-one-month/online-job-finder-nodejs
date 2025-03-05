@@ -14,6 +14,7 @@ import jobSkillRouter from "../features/job_skill/job_skill.router.js";
 import reviewRouter from "../features/review/review.router.js";
 import applicationExperienceRouter from "../features/ApplicantExperience /application.router.js";
 import socialMediaRouter from "../features/social/social.router.js";
+import profilePhotoRouter from "../features/profilePhoto/profilePhoto.router.js";
 
 const route = express.Router();
 
@@ -32,5 +33,6 @@ route.use("/job/skill", jobSkillRouter);
 route.use("/review", reviewRouter);
 route.use("/application/experience", applicationExperienceRouter);
 route.use("/social_media", socialMediaRouter);
+route.use("/profile-photo", profilePhotoRouter);
 
 export default route;
