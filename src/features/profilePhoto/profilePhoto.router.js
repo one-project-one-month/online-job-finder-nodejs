@@ -1,7 +1,7 @@
 import express from "express";
 import authenticateToken from "../../middlewares/authMiddleware.js";
 import {
-  createProfilePhotoController,
+  updateProfilePhotoController,
   destroyProfilePhotoController,
   getProfilePhotoByUserIdController,
 } from "./profilePhoto.controller.js";
@@ -13,7 +13,7 @@ profilePhotoRouter.put(
   "/:id",
   authenticateToken,
   upload.single("profilePhoto"),
-  createProfilePhotoController
+  updateProfilePhotoController
 );
 profilePhotoRouter.get("/:id", getProfilePhotoByUserIdController);
 profilePhotoRouter;

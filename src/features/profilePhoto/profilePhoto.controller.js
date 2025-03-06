@@ -1,13 +1,13 @@
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
-  createProfilePhoto,
+  updateProfilePhoto,
   getProfilePhotoByUserId,
   destroyProfilePhoto,
 } from "./porfilePhoto.service.js";
 
-export const createProfilePhotoController = async (req, res) => {
+export const updateProfilePhotoController = async (req, res) => {
   try {
-    const profilePhoto = await createProfilePhoto(req.body, req);
+    const profilePhoto = await updateProfilePhoto(req.body, req);
     res.status(StatusCode.SUCCESS).json({ data: profilePhoto });
   } catch (error) {
     res
@@ -18,8 +18,8 @@ export const createProfilePhotoController = async (req, res) => {
 
 export const getProfilePhotoByUserIdController = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const profilePhoto = getProfilePhotoByUserId(userId);
+    const profilePhoto = await getProfilePhotoByUserId(req.params.id);
+
     res.status(StatusCode.SUCCESS).json({ data: profilePhoto });
   } catch (error) {
     res
@@ -38,7 +38,7 @@ export const destroyProfilePhotoController = async (req, res) => {
         .json({ error: "User ID is missing from request." });
     }
 
-    const updatedUser = await destroyProfilePhoto(userId);
+    await destroyProfilePhoto(userId);
 
     return res.status(200).json({
       message: "Profile photo deleted successfully.",

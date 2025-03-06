@@ -3,13 +3,16 @@ import uploadToCloudinary from "../../utilities/uploadToCloudinary.js";
 import deleteImageByUrl from "../../utilities/deleteUrlFromCloudinary.js";
 import { profilePhotoSchema } from "./profilePhoto.validation.js";
 
-export const createProfilePhoto = async (data, req) => {
-  // data == req.body
-  const userId = req.user.id;
-  const file = req.file;
-  // const { username, id, version } = data;
+export const updateProfilePhoto = async (data, req) => {
+  try {
+    // data == req.body
+    const userId = req.user.id;
+    const file = req.file;
 
-  if (file) {
+    if (!file) {
+      throw new Error("No file uploaded.");
+    }
+
     const validMimeTypes = [
       "image/png",
       "image/jpeg",
@@ -22,9 +25,7 @@ export const createProfilePhoto = async (data, req) => {
         "Invalid file type. Only PNG, JPEG, JPG, or PDF files are allowed."
       );
     }
-  }
 
-  try {
     const uploadedUrl = await uploadToCloudinary(file.buffer);
     // need to pass this in for zod validation
     data.filePath = uploadedUrl;
@@ -50,15 +51,15 @@ export const createProfilePhoto = async (data, req) => {
   }
 };
 
-export const getProfilePhotoByUserId = async (req) => {
+export const getProfilePhotoByUserId = async (userId) => {
   try {
-    const userId = req.user;
-    const profilePhoto = await prisma.user.findMany({
+    const profilePhoto = await prisma.user.findUnique({
       where: { id: userId },
       select: {
         profilePhoto: true,
       },
     });
+
     if (!profilePhoto) {
       throw new Error("Profile photo not found");
     }
@@ -84,7 +85,7 @@ export const destroyProfilePhoto = async (userId) => {
       throw new Error("No profile photo found.");
     }
 
-    // Delete image from storage (Cloudinary, S3, etc.)
+    // Delete image from storage (Cloudinary)
     await deleteImageByUrl(user.profilePhoto);
 
     // Update profilePhoto to NULL in the database
