@@ -8,8 +8,11 @@ import {
   getJobByIdController,
   updateJobController,
 } from "./job.controller.js";
-import adminMiddleware from "../../middlewares/adminMiddleware.js";
 import authenticateToken from "../../middlewares/authMiddleware.js";
+import {
+  adminMiddleware,
+  adminRecruiterMiddleware,
+} from "../../middlewares/adminRecruiterMiddleware.js";
 
 const jobRouter = express.Router();
 
@@ -17,14 +20,14 @@ jobRouter.get("/", getAllJobController);
 jobRouter.post(
   "/",
   authenticateToken,
-  adminMiddleware,
+  adminRecruiterMiddleware,
   validate(jobSchema),
   createJobController
 );
 jobRouter.put(
   "/:id",
   authenticateToken,
-  adminMiddleware,
+  adminRecruiterMiddleware,
   validate(jobSchema),
   updateJobController
 );
