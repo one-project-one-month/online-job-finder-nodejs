@@ -1,7 +1,7 @@
 import express from "express";
 import {
   createResumeController,
-  getResumesController,
+  getResumesByUserIdController,
   getResumeByIdController,
   destroyResumeController,
 } from "./resumes.controller.js";
@@ -16,7 +16,7 @@ resumeRouter.post(
   upload.single("resume"),
   createResumeController
 );
-resumeRouter.get("/", getResumesController);
+resumeRouter.get("/", authenticateToken, getResumesByUserIdController);
 resumeRouter.get("/:id", getResumeByIdController);
 resumeRouter.delete("/:id", authenticateToken, destroyResumeController);
 

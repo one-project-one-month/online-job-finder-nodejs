@@ -1,7 +1,7 @@
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
   createResume,
-  getResumes,
+  getResumesByUserId,
   getResumeById,
   destroyResume,
 } from "./resumes.service.js";
@@ -17,9 +17,9 @@ export const createResumeController = async (req, res) => {
   }
 };
 
-export const getResumesController = async (req, res) => {
+export const getResumesByUserIdController = async (req, res) => {
   try {
-    const resumes = await getResumes();
+    const resumes = await getResumesByUserId(req);
     res.status(StatusCode.SUCCESS).json({ data: resumes });
   } catch (error) {
     res
