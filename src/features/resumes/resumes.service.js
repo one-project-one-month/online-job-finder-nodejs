@@ -51,29 +51,23 @@ export const createResume = async (data, req) => {
   }
 };
 
-export const getResumes = async () => {
+export const getResumesByUserId = async (req) => {
   try {
+    const userId = req.user.id;
+
     const resumes = await prisma.resume.findMany({
+      where: { userId },
       select: {
-        id: true,
-        userId: true,
         filePath: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-          },
-        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
-
     return resumes;
   } catch (error) {
-    console.error("Error fetching resumes:", error);
-    throw new Error("Failed to fetch resumes");
+    console.error("Error fetching resume by userId:", error);
+    throw new Error("Failed to fetch resume by userId");
   }
 };
 
