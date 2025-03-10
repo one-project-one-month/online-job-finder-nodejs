@@ -35,6 +35,8 @@ export const createJob = async (data) => {
     });
     return job;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Failed to create job", error.message);
   }
 };
@@ -106,8 +108,6 @@ export const getAllJob = async (filters) => {
     });
     return jobs;
   } catch (error) {
-    console.log(error);
-
     throw new Error("fail to fetch job data", error.message);
   }
 };
@@ -193,6 +193,8 @@ export const updateJob = async (data, jobId) => {
     });
     return job;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Fail to update job", error.message);
   }
 };
@@ -204,6 +206,7 @@ export const destoryJob = async (jobId) => {
     });
     return job;
   } catch (error) {
+    console.log(job);
     throw new Error("fail to delete job", error.message);
   }
 };
