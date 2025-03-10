@@ -1,26 +1,26 @@
 import prisma from "../database/index.js";
 import { StatusCode } from "../errors/StatusCode.js";
 
-const adminMiddleware = async (req, res, next) => {
+const roleMiddleware = (allowedRoles) => async (req, res, next) => {
   try {
     if (!req.user) {
       return res
-        .status(StatusCode.BAD_REQUEST)
+        .status(StatusCode.UNAUTHORIZED)
         .json({ message: "Unauthorized: No user logged in" });
     }
 
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      include: { role: true },  
+      include: { role: true },
     });
 
-    if (!user || user.role.name !== "Admin") {
+    if (!user || !allowedRoles.includes(user.role.name)) {
       return res
         .status(StatusCode.FORBIDDEN)
-        .json({ message: "Forbidden: Admin access only" });
+        .json({ message: "Forbidden: Insufficient permissions" });
     }
-    req.user = user;
 
+    req.user = user;
     next();
   } catch (error) {
     res
@@ -29,4 +29,6 @@ const adminMiddleware = async (req, res, next) => {
   }
 };
 
-export default adminMiddleware;
+export const adminMiddleware = roleMiddleware(["Admin"]);
+
+export const adminRecruiterMiddleware = roleMiddleware(["Admin", "Recruiter"]);

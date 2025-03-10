@@ -1,3 +1,4 @@
+import prisma from "../../database/index.js";
 import { StatusCode } from "../../errors/StatusCode.js";
 import {
   createJob,
@@ -6,6 +7,15 @@ import {
   getJobById,
   updateJob,
 } from "./job.service.js";
+
+export const createJobController = async (req, res) => {
+  try {
+    const job = await createJob(req.body);
+    res.status(StatusCode.SUCCESS).json({ data: job });
+  } catch (error) {
+    res.status(StatusCode.INTERNAL_SERVER_ERROR).json(error.message);
+  }
+};
 
 export const getAllJobController = async (req, res) => {
   try {
@@ -30,5 +40,23 @@ export const getJobByIdController = async (req, res) => {
     res.status(StatusCode.SUCCESS).json({ data: job });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
+  }
+};
+
+export const updateJobController = async (req, res) => {
+  try {
+    const job = await updateJob(req.body, req.params.id);
+    res.status(StatusCode.SUCCESS).json({ data: job });
+  } catch (error) {
+    res.status(StatusCode.INTERNAL_SERVER_ERROR).json(error.message);
+  }
+};
+
+export const destoryJobController = async (req, res) => {
+  try {
+    await destoryJob(req.params.id);
+    res.status(StatusCode.SUCCESS).json({ success: true });
+  } catch (error) {
+    res.status(StatusCode.INTERNAL_SERVER_ERROR).json(error.message);
   }
 };
