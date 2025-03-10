@@ -79,7 +79,7 @@ export const changePassword = async (userId, currentPassword, newPassword) => {
     data: { password: hashedPassword },
   });
 
-  return json("Password changed successfully");
+  return updatedUser;
 };
 
 export const authUser = async (userId) => {

@@ -1,19 +1,20 @@
 import express from "express";
 import applicantRouter from "../features/applicant/applicant.router.js";
 import resumeRouter from "../features/resumes/resumes.router.js";
-import recruiterRouter from "../features/recruiter/recruiter.route.js";
-import locationRouter from "../features/locations/location.route.js";
 import skillRouter from "../features/skills/skill.route.js";
-import jobCategoryRouter from "../features/job_category/job_category.router.js";
 import jobRouter from "../features/job/job.router.js";
-import authRouter from "../features/auth/auth.router.js";
 import applicationRouter from "../features/application/application.router.js";
 import userRouter from "../features/user/user.router.js";
 import applicantSkillRouter from "../features/applicant_skill/applicant_skill.router.js";
 import jobSkillRouter from "../features/job_skill/job_skill.router.js";
 import reviewRouter from "../features/review/review.router.js";
 import applicationExperienceRouter from "../features/ApplicantExperience /application.router.js";
+import authRouter from "../features/auth/auth.router.js";
+import recruiterRouter from "../features/recruiter/recruiter.route.js";
+import locationRouter from "../features/locations/location.route.js";
+import jobCategoryRouter from "../features/job_category/job_category.router.js";
 import socialMediaRouter from "../features/social/social.router.js";
+import profilePhotoRouter from "../features/profilePhoto/profilePhoto.router.js";
 
 const route = express.Router();
 
@@ -32,5 +33,6 @@ route.use("/job/skill", jobSkillRouter);
 route.use("/review", reviewRouter);
 route.use("/application/experience", applicationExperienceRouter);
 route.use("/social_media", socialMediaRouter);
+route.use("/profile-photo", profilePhotoRouter);
 
 export default route;

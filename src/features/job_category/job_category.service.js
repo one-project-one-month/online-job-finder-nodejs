@@ -72,6 +72,8 @@ export const destoryJobCategory = async (jobCategoryId) => {
     });
     return jobCategory;
   } catch (error) {
+    console.log(error);
+
     throw new Error("Fail to delete job category");
   }
 };

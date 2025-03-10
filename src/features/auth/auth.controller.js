@@ -45,7 +45,6 @@ export const changePasswordController = async (req, res) => {
 
     res.json({
       status: "success",
-      data: response,
     });
   } catch (error) {
     res.status(StatusCode.BAD_REQUEST).json({ message: error.message });
