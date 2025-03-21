@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src",
-    "postinstall": "prisma migrate dev"
+    "postinstall": "prisma migrate deploy"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
